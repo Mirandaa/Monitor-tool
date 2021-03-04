@@ -6,7 +6,16 @@ const Page = () => {
   useEffect(() => {
     getExampleData().then((graph) => {
       setOption({
-        tooltip: {},
+        tooltip: {
+          trigger: 'item',
+          formatter: function (params,ticket,callback) {
+            var res = '<p>' + params.name + '</p>';
+            setTimeout(function () {
+              callback(ticket, res);
+            });
+            return 'loading';
+          }
+        },
         legend: [{
           data: graph.categories.map(function (a) {
             return a.name;
@@ -14,7 +23,6 @@ const Page = () => {
         }],
         series: [
           {
-            name: 'Les Miserables',
             type: 'graph',
             layout: 'none',
             data: graph.nodes,
