@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
+import { withRouter } from 'react-router-dom';
 import { getExampleData } from "../../api";
 import data from './example-data';
 
-const Page = () => {
+const Page = (props) => {
   const [option, setOption] = useState({});
   useEffect(() => {
     getExampleData().then((graph) => {
@@ -11,12 +12,13 @@ const Page = () => {
       setOption({
         tooltip: {
           trigger: 'item',
-          formatter: function (params,ticket,callback) {
-            var res = '<p>' + params.name + '</p>';
-            setTimeout(function () {
-              callback(ticket, res);
-            });
-            return 'loading';
+          formatter: function (params) {
+            var res = `
+            <p style="font-weight: bold; line-height: 20px;">${params.data.name}</p>
+            <p style="height: 16px;"><label style="width: 50px; text-overflow: ellipsis">Server</label><span style="font-weight: bold;">${params.data.server}</span></p>
+            <p style="height: 16px;"><label style="width: 50px; text-overflow: ellipsis">Owner</label><span style="font-weight: bold;">${params.data.owner}</span></p>
+            `;
+            return res;
           }
         },
         legend: [{
@@ -27,7 +29,7 @@ const Page = () => {
         series: [
           {
             type: 'graph',
-            layout: 'none',
+            layout: 'force',
             data: graph.nodes,
             links: graph.links,
             categories: graph.categories,
@@ -58,13 +60,11 @@ const Page = () => {
   }, []);
 
   const onClick = (e) => {
-    console.log(e);
+    props.history.push('/dashboard/123');
   };
 
   const onEvents = {
-    'click': (e) => {
-      console.log(123, e);
-    }
+    'click': onClick
   };
 
   return (
@@ -76,4 +76,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default withRouter(Page);
