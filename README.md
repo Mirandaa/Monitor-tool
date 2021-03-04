@@ -1,174 +1,188 @@
-[![@coreui coreui](https://img.shields.io/badge/@coreui%20-coreui-lightgrey.svg?style=flat-square)](https://github.com/coreui/coreui)
-[![npm package][npm-coreui-badge]][npm-coreui]
-[![NPM downloads][npm-coreui-download]][npm-coreui]  
-[![@coreui react](https://img.shields.io/badge/@coreui%20-react-lightgrey.svg?style=flat-square)](https://github.com/coreui/react)
-[![npm package][npm-coreui-react-badge]][npm-coreui-react]
-[![NPM downloads][npm-coreui-react-download]][npm-coreui-react]  
-[![npm next][npm-next]][npm]
+- # Teamwork
+  Technology:
 
-[npm-coreui]: https://www.npmjs.com/package/@coreui/coreui
-[npm-coreui-badge]: https://img.shields.io/npm/v/@coreui/coreui.png?style=flat-square
-[npm-coreui-download]: https://img.shields.io/npm/dm/@coreui/coreui.svg?style=flat-square
-[npm-coreui-react]: https://www.npmjs.com/package/@coreui/react
-[npm-coreui-react-badge]: https://img.shields.io/npm/v/@coreui/react.png?style=flat-square
-[npm-coreui-react-download]: https://img.shields.io/npm/dm/@coreui/react.svg?style=flat-square
-[npm-next]: https://img.shields.io/npm/v/@coreui/react/next.png?style=flat-square
-[npm]: https://www.npmjs.com/package/@coreui/react
+  >Front end: 
+  >
+  >- ReactJS + CoreUI
+  >
+  >Back end:
+  >
+  >- xxx
+  >
+  >Database:
+  >
+  >- xxx
+  >
+  >API style:
+  >
+  >- RESTful
 
-# CoreUI Free React Admin Template v3
+  ### 0. API Standards
 
-CoreUI is meant to be the UX game changer. Pure & transparent code is devoid of redundant components, so the app is light enough to offer ultimate user experience. This means mobile devices also, where the navigation is just as easy and intuitive as on a desktop or laptop. The CoreUI Layout API lets you customize your project for almost any device – be it Mobile, Web or WebApp – CoreUI covers them all!
+  ```json
+  {
+    "error": {
+      "code": ,
+      "message": 
+    },
+    "data": {
+      
+    }
+  }
+  ```
 
-## Table of Contents
+  ## Application Page
 
-* [Versions](#versions)
-* [CoreUI Pro](#coreui-pro)
-* [Installation](#installation)
-* [Basic usage](#create-react-app)
-* [What's included](#whats-included)
-* [Documentation](#documentation)
-* [Versioning](#versioning)
-* [Creators](#creators)
-* [Community](#community)
-* [Copyright and License](#copyright-and-license)
+  ### 1. Get App (Node)
 
-## Versions
+  > Description: Get all nodes (app-server)
 
-* [CoreUI Free Bootstrap Admin Template](https://github.com/coreui/coreui-free-bootstrap-admin-template)
-* [CoreUI Free Angular 9+ Admin Template](https://github.com/coreui/coreui-free-angular-admin-template)
-* [CoreUI Free React.js Admin Template](https://github.com/coreui/coreui-free-react-admin-template)
-* [CoreUI Free Vue.js Admin Template](https://github.com/coreui/coreui-free-vue-admin-template)
-* [CoreUI Free Laravel Admin Template](https://github.com/coreui/coreui-free-laravel-admin-template)
-* [CoreUI Free Vue.js + Laravel Admin Template](https://github.com/coreui/coreui-free-vue-laravel-admin-template)
+  API:
 
-## CoreUI Pro
+  ```son
+  GET   http://192.168.43.141:8899/getNodes
+  ```
 
-**Only customers with [Enterpise Membership Plan](https://coreui.io/pro/#buy) have access to private github CoreUI Pro repository.**
+  Params example:
 
-* 💪  [CoreUI Pro Bootstrap Admin Template](https://coreui.io/pro/)
-* 💪  [CoreUI Pro Angular 9+ Admin Template](https://coreui.io/pro/angular)
-* 💪  [CoreUI Pro React Admin Template](https://coreui.io/pro/react)
-* 💪  [CoreUI Pro Vue Admin Template](https://coreui.io/pro/vue)
-* 💪  [CoreUI Pro Laravel Admin Template](https://coreui.io/pro/laravel/)
-* 💪  [CoreUI Pro Vue.js + Laravel Admin Template](https://coreui.io/pro/vue-laravel/)
+  ```json
+  {}
+  ```
 
-## Installation
+  Return data:
 
-### Clone repo
+  ```json
+  {
+    "error": {
+      "code": 200,
+      "message": ""
+    },
+    "data": {
+      "nodes": [
+        {
+          "id": "appID1-serverID1",
+          "name": "Myriel",
+          "server: "159.323.12.15",
+          "category": 0,
+          "owner": "Rates Sales"
+        },
+        {
+          "id": "appID2-serverID2",
+          "name": "Napoleon",
+          "server: "159.323.12.15",
+          "category": 0,
+          "owner": "Rates Sales"
+        },
+        {
+          "id": "appID3-serverID3",
+          "name": "MlleBaptistine",
+          "server: "159.323.12.15",
+          "category": 1,
+          "owner": "Rates Sales"
+        },
+        {
+          "id": "appID4-serverID4",
+          "name": "MmeMagloire",
+          "server: "159.323.12.15",
+          "category": 1,
+          "owner": "Rates Sales"
+        },
+        {
+          "id": "appID5-serverID5",
+          "name": "CountessDeLo",
+          "server: "159.323.12.15",
+          "category": 1,
+          "owner": "Rates Sales"
+        },
+        {
+          "id": "appID1-serverID1",
+          "name": "Geborand",
+          "server: "159.323.12.15",
+          "category": 1,
+          "owner": "Rates Sales"
+        }
+      ],
+      "links": [
+        {
+          "source": "appID5-serverID5",
+          "target": "appID1-serverID1"
+        },
+        {
+          "source": "appID3-serverID3",
+          "target": "appID4-serverID4"
+        },
+        {
+          "source": "appID1-serverID1",
+          "target": "appID2-serverID2"
+        }
+      ],
+      "categories": [
+        {
+          "name": "app1"
+        },
+        {
+          "name": "app2"
+        },
+        {
+          "name": "app3"
+        }
+      ]
+    }
+  }
+  ```
 
-``` bash
-# clone the repo
-$ git clone https://github.com/coreui/coreui-free-react-admin-template.git my-project
+  Return code:
 
-# go into app's directory
-$ cd my-project
+  ```son
+  200 - OK
+  ```
 
-# install app's dependencies
-$ npm install
-```
+  ### 2. Get each app's basic index
 
-### Copy and Paste
+  > Description: After user click into
+  >
+  > 传递某个app-server (node) 具体的basic index，rule
+  >
 
-Copy all your files to your project folder and then,
+  API:
 
-``` bash
-# go into app's directory
-$ cd my-project
+  ```son
+  POST   http://192.168.43.141:8899/api/getResult
+  ```
 
-# install app's dependencies
-$ npm install
-```
+  Parameter example:
 
-## Create React App
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)
+  ```json
+  {
+    "id": "appID1-serverID1"
+  }
+  ```
 
-see also:
-[CRA docs](https://create-react-app.dev/docs/getting-started)
+  Return data:
 
-### Basic usage
+  ```json
+  {
+    "basicIndex": {
+      "cpu": {
+        "usage": "20%",
+        "process": 120
+      },
+      "memory": {
+        "usage": "1239 MB",
+        "total": "111203 MB"
+      },
+      "jvm": {},
+      "disk": {
+        "usage": "60 GB",
+        "total": "256 GB"
+      }
+    },
+    "rules": {}
+  }
+  ```
 
-``` bash
-# dev server with hot reload at http://localhost:3000
-$ npm start
-```
+  Return code:
 
-Navigate to [http://localhost:3000](http://localhost:3000). The app will automatically reload if you change any of the source files.
-
-### Build
-
-Run `build` to build the project. The build artifacts will be stored in the `build/` directory.
-
-```bash
-# build for production with minification
-$ npm run build
-```
-
-## What's included
-
-Within the download you'll find the following directories and files, logically grouping common assets and providing both compiled and minified variations. You'll see something like this:
-
-```
-CoreUI-React#v3.0.0
-├── public/          #static files
-│   └── index.html   #html template
-│
-├── src/             #project root
-│   ├── assets/      #assets - js icons object
-│   ├── containers/  #container source - template layout
-|   │   ├── _nav.js  #sidebar config
-|   │   └── ...      
-│   ├── scss/        #user scss/css source
-│   ├── views/       #views source
-│   ├── App.js
-│   ├── App.test.js
-│   ├── polyfill.js
-│   ├── index.js
-│   ├── routes.js    #routes config
-│   └── store.js     #template state example 
-│
-└── package.json
-```
-
-## Documentation
-
-The documentation for the CoreUI Admin Template is hosted at our website [CoreUI for React](https://coreui.io/react/)
-
-### :film_strip: How to setup coreui react theme in laravel. Video tutorial available [here](https://youtu.be/HVVpbpNUJ8M)
-
-## Versioning
-
-For transparency into our release cycle and in striving to maintain backward compatibility, CoreUI Free Admin Template is maintained under [the Semantic Versioning guidelines](http://semver.org/).
-
-See [the Releases section of our project](https://github.com/coreui/coreui-free-react-admin-template/releases) for changelogs for each release version.
-
-## Creators
-
-**Łukasz Holeczek**
-* <https://twitter.com/lukaszholeczek>
-* <https://github.com/mrholek>
-* <https://github.com/coreui>
-
-**CoreUI team**
-* https://github.com/orgs/coreui/people
-
-## Community
-
-Get updates on CoreUI's development and chat with the project maintainers and community members.
-
-- Follow [@core_ui on Twitter](https://twitter.com/core_ui).
-- Read and subscribe to [CoreUI Blog](https://coreui.ui/blog/).
-
-
-## Copyright and License
-
-copyright 2020 creativeLabs Łukasz Holeczek.   
-
- 
-Code released under [the MIT license](https://github.com/coreui/coreui-free-react-admin-template/blob/master/LICENSE).
-There is only one limitation you can't can’t re-distribute the CoreUI as stock. You can’t do this if you modify the CoreUI. In past we faced some problems with persons who tried to sell CoreUI based templates.
-
-## Support CoreUI Development
-
-CoreUI is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support development by buying [CoreUI Pro Version](https://coreui.io/pro/).
-
-We're also open to conversations regarding custom sponsorship / consulting arrangements. Get in touch on [Twitter](https://twitter.com/lukaszholeczek).
+  ```son
+  200 - OK
+  ```

@@ -9,19 +9,25 @@ const Page = () => {
     getExampleData().then((graph) => {
       graph = data;
       setOption({
-        tooltip: {},
-        legend: [
-          {
-            data: graph.categories.map(function (a) {
-              return a.name;
-            }),
-          },
-        ],
+        tooltip: {
+          trigger: 'item',
+          formatter: function (params,ticket,callback) {
+            var res = '<p>' + params.name + '</p>';
+            setTimeout(function () {
+              callback(ticket, res);
+            });
+            return 'loading';
+          }
+        },
+        legend: [{
+          data: graph.categories.map(function (a) {
+            return a.name;
+          })
+        }],
         series: [
           {
-            name: "Les Miserables",
-            type: "graph",
-            layout: "force",
+            type: 'graph',
+            layout: 'none',
             data: graph.nodes,
             links: graph.links,
             categories: graph.categories,
