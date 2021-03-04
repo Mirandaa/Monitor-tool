@@ -96,6 +96,8 @@ import {
   cilLockLocked,
   cilMagnifyingGlass,
   cilMap,
+  cilMemory,
+  cilMonitor,
   cilMoon,
   cilNotes,
   cilOptions,
@@ -128,7 +130,8 @@ import {
   cilUserUnfollow,
   cilX,
   cilXCircle,
-  cilWarning
+  cilWarning,
+  cil3d
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
@@ -195,7 +198,9 @@ export const icons = Object.assign({}, {
   cilLockLocked,
   cilMagnifyingGlass,
   cilMap,
+  cilMemory,
   cilMoon,
+  cilMonitor,
   cilNotes,
   cilOptions,
   cilPaperclip,
@@ -227,7 +232,8 @@ export const icons = Object.assign({}, {
   cilUserUnfollow,
   cilX,
   cilXCircle,
-  cilWarning
+  cilWarning,
+  cil3d
 }, {
   cifUs,
   cifBr,
