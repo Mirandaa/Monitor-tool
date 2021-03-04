@@ -1,6 +1,11 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
+  CDropdown,
+  // CDropdownDivider,
+  CDropdownItem,
+  CDropdownMenu,
+  CDropdownToggle,
   CHeader,
   CToggler,
   CHeaderBrand,
@@ -18,14 +23,16 @@ import routes from '../routes'
 
 import { 
   TheHeaderDropdown,
-  TheHeaderDropdownMssg,
+  // TheHeaderDropdownMssg,
   TheHeaderDropdownNotif,
   TheHeaderDropdownTasks
 }  from './index'
+import { useLocation } from 'react-router-dom'
 
 const TheHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector(state => state.sidebarShow)
+  const currentPath = useLocation().pathname;
 
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
@@ -57,18 +64,18 @@ const TheHeader = () => {
         <CHeaderNavItem className="px-3" >
           <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
         </CHeaderNavItem>
-        <CHeaderNavItem  className="px-3">
+        {/* <CHeaderNavItem  className="px-3">
           <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
+        </CHeaderNavItem> */}
+        {/* <CHeaderNavItem className="px-3">
           <CHeaderNavLink>Settings</CHeaderNavLink>
-        </CHeaderNavItem>
+        </CHeaderNavItem> */}
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
         <TheHeaderDropdownNotif/>
         <TheHeaderDropdownTasks/>
-        <TheHeaderDropdownMssg/>
+        {/* <TheHeaderDropdownMssg/> */}
         <TheHeaderDropdown/>
       </CHeaderNav>
 
@@ -77,21 +84,46 @@ const TheHeader = () => {
           className="border-0 c-subheader-nav m-0 px-0 px-md-3" 
           routes={routes} 
         />
+        {currentPath === '/dashboard' ? 
           <div className="d-md-down-none mfe-2 c-subheader-nav">
-            <CLink className="c-subheader-nav-link"href="#">
-              <CIcon name="cil-speech" alt="Settings" />
-            </CLink>
-            <CLink 
+            <CDropdown className="c-subheader-nav-link">
+              <CDropdownToggle >
+                <CIcon name="cil-graph" alt="Dashboard" />&nbsp;App1_Server1
+              </CDropdownToggle>
+              <CDropdownMenu>
+                <CDropdownItem>
+                  <CLink 
+                    className="c-subheader-nav-link" 
+                    aria-current="page" 
+                    to="/xxx-app1"
+                  >
+                    App-1
+                  </CLink>
+                </CDropdownItem>
+                {/* <CDropdownDivider /> */}
+                <CDropdownItem>
+                  <CLink 
+                    className="c-subheader-nav-link" 
+                    aria-current="page" 
+                    to="/xxx-app2"
+                  >
+                    App-2
+                  </CLink>
+                </CDropdownItem>
+              </CDropdownMenu>
+            </CDropdown>
+            {/* <CLink 
               className="c-subheader-nav-link" 
               aria-current="page" 
               to="/dashboard"
             >
               <CIcon name="cil-graph" alt="Dashboard" />&nbsp;Dashboard
-            </CLink>
+            </CLink> */}
             <CLink className="c-subheader-nav-link" href="#">
               <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings
             </CLink>
           </div>
+        : null} 
       </CSubheader>
     </CHeader>
   )
