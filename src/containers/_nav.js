@@ -20,6 +20,12 @@ const _nav = [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Visualize',
+    to: '/visualize',
+    icon: 'cil-chart-pie'
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Dashboard',
     to: '/dashboard/123',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
