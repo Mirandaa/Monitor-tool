@@ -17,7 +17,7 @@
   >
   >- RESTful
 
-  ### 0. API Standards
+  ### API Response Standards
 
   ```json
   {
@@ -33,23 +33,87 @@
 
   ## Application Page
 
-  ### 1. Get App (Node)
+  ### 0. Create a new node
+
+  > Description: Create a new node (app-server)
+
+  API
+
+  Request
+
+  ```json
+  method: POST
+  url: /createNode
+  params: {
+    "appName": "pricer_ui",
+    "hostName": "5fb7cce0-33d0-110",
+    "owner": "Rates Sales",
+    "groupEmail": "dl.gt.cn.icg@imcap.ssmb.com",
+    "description": "Web tool for sales to pricing"
+  }
+  ```
+
+  Response
+
+  ```json
+  {
+    "error": {
+      "code": 200,
+      "message": "create node success"
+    },
+    "data": {
+      
+    }
+  }
+  ```
+
+  ### 1. Create a new trace
+
+  > Description: Create a new trace, from, to 
+
+  API
+
+  Request
+
+  ```json
+  method: POST
+  url: /createTrace
+  params: {
+    "mainNode": "pricer_ui",
+    "fromNode": "blotter",
+    "toNode": "vvr"
+  }
+  ```
+
+  Response
+
+  ```json
+  {
+    "error": {
+      "code": 200,
+      "message": "create trace success"
+    },
+    "data": {
+      
+    }
+  }
+  ```
+
+  ### 2. Get all nodes (app-server)
 
   > Description: Get all nodes (app-server)
 
-  API:
+  API
 
-  ```son
-  GET   http://192.168.43.141:8899/getNodes
-  ```
-
-  Params example:
+  Request
 
   ```json
-  {}
+  method: GET
+  url: /getNodes
+  params: {}
   ```
 
-  Return data:
+  Response
 
   ```json
   {
@@ -137,23 +201,23 @@
   200 - OK
   ```
 
-  ### 2. Get each app's basic index
+  ## Dashboard Page
+
+  ### 0. Get each app's basic index
 
   > Description: After user click into
   >
   > 传递某个app-server (node) 具体的basic index，rule
   >
 
-  API:
+  API
 
-  ```son
-  POST   http://192.168.43.141:8899/api/getResult
-  ```
-
-  Parameter example:
+  Request
 
   ```json
-  {
+  method: GET
+  url: /getBasicIndex
+  params: {
     "id": "appID1-serverID1"
   }
   ```
