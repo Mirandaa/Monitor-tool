@@ -94,9 +94,9 @@
   url: /createTrace
   params: {
     "traceName": "用户命名",
-    "mainNodeID": "主节点",
-    "fromNodeID": "上游节点",
-    "toNodeID": "下游节点"
+    "mainNodeId": "主节点",
+    "fromNodeId": "上游节点",
+    "toNodeId": "下游节点"
   }
   ```
 
@@ -131,7 +131,7 @@
   ```json
   {
     "code": 200,
-    "message": "Get all nodes"
+    "message": "Get all nodes",
     "data": {
       "nodes": [
         {
