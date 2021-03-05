@@ -47,7 +47,7 @@ const routes = [
   { path: '/applications', name: 'Applications', component: Applications },
   { path: '/createNode', name: 'Create Node', component: CreateNode },
   { path: '/createTrace', name: 'Create Trace', component: CreateTrace },
-  { path: '/dashboard:id', name: 'Dashboard', component: Dashboard },
+  { path: '/dashboard/:id', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

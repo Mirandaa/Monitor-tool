@@ -20,6 +20,7 @@ import BasicIndex from './basicIndex/BasicIndex.js';
 const Dashboard = () => {
   return (
     <>
+      <h5 className="mb-2">Host: 159.323.12.15</h5>
       <BasicIndex />
       <CCard>
         <CCardBody>
@@ -105,7 +106,7 @@ const Dashboard = () => {
         </CCardFooter>
       </CCard>
 
-      <CRow>
+      {/* <CRow>
         <CCol>
           <CCard>
             <CCardHeader>
@@ -317,7 +318,7 @@ const Dashboard = () => {
             </CCardBody>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow> */}
     </>
   )
 }
