@@ -29,6 +29,7 @@ const Charts = React.lazy(() => import('./views/charts/Charts'));
 const Applications = React.lazy(() => import('./views/applications/Applications'));
 const CreateNode = React.lazy(() => import('./views/createNode/CreateNode'));
 const CreateTrace = React.lazy(() => import('./views/createTrace/CreateTrace'));
+const Visualize = React.lazy(() => import('./views/visualize/Visualize'));
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'));
 const Flags = React.lazy(() => import('./views/icons/flags/Flags'));
@@ -47,7 +48,8 @@ const routes = [
   { path: '/applications', name: 'Applications', component: Applications },
   { path: '/createNode', name: 'Create Node', component: CreateNode },
   { path: '/createTrace', name: 'Create Trace', component: CreateTrace },
-  { path: '/dashboard:id', name: 'Dashboard', component: Dashboard },
+  { path: '/visualize', name: 'Visualize', component: Visualize },
+  { path: '/dashboard/:id', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },

@@ -131,7 +131,15 @@ import {
   cilX,
   cilXCircle,
   cilWarning,
-  cil3d
+  cil3d,
+  cilSignalCellular3,
+  cilDescription,
+  cilGrain,
+  cilClearAll,
+  cilChartLine,
+  cilFont,
+  cilAvTimer,
+  cilBarChart
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
@@ -139,6 +147,14 @@ export const icons = Object.assign({}, {
   logo,
   logoNegative
 }, {
+  cilBarChart,
+  cilAvTimer,
+  cilFont,
+  cilChartLine,
+  cilClearAll,
+  cilGrain,
+  cilDescription,
+  cilSignalCellular3,
   cilApps,
   cilAlignCenter,
   cilAlignLeft,
