@@ -84,7 +84,7 @@ const TheHeader = () => {
           className="border-0 c-subheader-nav m-0 px-0 px-md-3" 
           routes={routes} 
         />
-        {currentPath === '/dashboard' ? 
+        {currentPath === '/dashboard/123' ? 
           <div className="d-md-down-none mfe-2 c-subheader-nav">
             <CDropdown className="c-subheader-nav-link">
               <CDropdownToggle >

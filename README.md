@@ -17,172 +17,331 @@
   >
   >- RESTful
 
-  ### 0. API Standards
+  ### API Response Standards
 
   ```json
   {
-    "error": {
-      "code": ,
-      "message": 
-    },
+    "code": ,
+    "message": ,
     "data": {
       
     }
   }
   ```
 
+  Status Code & Message
+
+  | Code | Message                       |
+  | ---- | ----------------------------- |
+  | 200  | "success"                     |
+  | 401  | "unauthorized"                |
+  | 404  | "can't find reqeust resource" |
+  | 408  | "request time out"            |
+  | 461  | "invalid input parameters"    |
+  | 500  | "server error"                |
+  | 503  | "server unavailable"          |
+  | 521  | "cache exception"             |
+
   ## Application Page
 
-  ### 1. Get App (Node)
+  ### 0. Create a new node
 
-  > Description: Get all nodes (app-server)
+  > 创建一个新的node
 
-  API:
+  API
 
-  ```son
-  GET   http://192.168.43.141:8899/getNodes
-  ```
-
-  Params example:
+  Request
 
   ```json
-  {}
+  method: POST
+  url: /createNode
+  params: {
+    "appName": "应用名称",
+    "hostName": "server名称",
+    "owner": "app拥有者，一般是app的leader",
+    "group": "开发和运维app的小组",
+    "groupEmail": "小组联系方式",
+    "description": "应用的简单描述"
+  }
   ```
 
-  Return data:
+  >  *后端根据appName和hostName对nodeID命名：*
+  >
+  > **nodeID = appName#hostName**
+
+  Response
 
   ```json
   {
-    "error": {
-      "code": 200,
-      "message": ""
-    },
+    "code": 200,
+    "message": "create node success",
+    "data": {
+      
+    }
+  }
+  ```
+
+  ### 1. Create a new trace
+
+  > 创建一个新的trace
+
+  API
+
+  Request
+
+  ```json
+  method: POST
+  url: /createTrace
+  params: {
+    "traceName": "用户命名",
+    "mainNodeId": "主节点",
+    "fromNodeId": "上游节点",
+    "toNodeId": "下游节点"
+  }
+  ```
+
+  Response
+
+  ```json
+  {
+    "code": 200,
+    "message": "create trace success",
+    "data": {
+      
+    }
+  }
+  ```
+
+  ### 2. Get all nodes
+
+  > 获取所有节点及其信息
+
+  API
+
+  Request
+
+  ```json
+  method: GET
+  url: /getAllNodes
+  params: {}
+  ```
+
+  Response
+
+  ```json
+  {
+    "code": 200,
+    "message": "Get all nodes",
     "data": {
       "nodes": [
         {
-          "id": "appID1-serverID1",
-          "name": "Myriel",
-          "server": "159.323.12.15",
-          "category": 0,
-          "owner": "Rates Sales"
+          "id": "nodeID1",
+          "appName": "app名称",
+    		"hostName": "server名称",
+    		"owner": "app拥有者，一般是app的leader",
+    		"group": "开发和运维app的小组",
+    		"groupEmail": "小组联系方式",
+          "category": 0
         },
         {
-          "id": "appID2-serverID2",
-          "name": "Napoleon",
-          "server": "159.323.12.15",
-          "category": 0,
-          "owner": "Rates Sales"
+          "id": "nodeID2",
+          "appName": "app名称",
+    		"hostName": "server名称",
+    		"owner": "app拥有者，一般是app的leader",
+    		"group": "开发和运维app的小组",
+    		"groupEmail": "小组联系方式",
+          "category": 1
         },
         {
-          "id": "appID3-serverID3",
-          "name": "MlleBaptistine",
-          "server": "159.323.12.15",
-          "category": 1,
-          "owner": "Rates Sales"
-        },
-        {
-          "id": "appID4-serverID4",
-          "name": "MmeMagloire",
-          "server": "159.323.12.15",
-          "category": 1,
-          "owner": "Rates Sales"
-        },
-        {
-          "id": "appID5-serverID5",
-          "name": "CountessDeLo",
-          "server": "159.323.12.15",
-          "category": 1,
-          "owner": "Rates Sales"
-        },
-        {
-          "id": "appID1-serverID1",
-          "name": "Geborand",
-          "server": "159.323.12.15",
-          "category": 1,
-          "owner": "Rates Sales"
+          "id": "nodeID3",
+          "appName": "app名称",
+    		"hostName": "server名称",
+    		"owner": "app拥有者，一般是app的leader",
+    		"group": "开发和运维app的小组",
+    		"groupEmail": "小组联系方式",
+          "category": 0
         }
       ],
       "links": [
         {
-          "source": "appID5-serverID5",
-          "target": "appID1-serverID1"
+          "source": "nodeID3",
+          "target": "nodeID2"
         },
         {
-          "source": "appID3-serverID3",
-          "target": "appID4-serverID4"
-        },
-        {
-          "source": "appID1-serverID1",
-          "target": "appID2-serverID2"
+          "source": "nodeID1",
+          "target": "nodeID2"
         }
       ],
       "categories": [
         {
-          "name": "app1"
+          "name": "green"
         },
         {
-          "name": "app2"
+          "name": "yellow"
         },
         {
-          "name": "app3"
+          "name": "red"
         }
       ]
     }
   }
   ```
 
-  Return code:
+  ## Dashboard Page
 
-  ```son
-  200 - OK
-  ```
+  ### 0. Get each app's basic index
 
-  ### 2. Get each app's basic index
-
-  > Description: After user click into
-  >
-  > 传递某个app-server (node) 具体的basic index，rule
+  > 传递某个node (app#server) 具体的basic index
   >
 
-  API:
+  API
 
-  ```son
-  POST   http://192.168.43.141:8899/api/getResult
-  ```
-
-  Parameter example:
+  Request
 
   ```json
-  {
-    "id": "appID1-serverID1"
+  method: GET
+  url: /getNodeBasicMetrics
+  params: {
+    "nodeId": "nodeID"
   }
   ```
 
-  Return data:
+  Response
 
   ```json
   {
-    "basicIndex": {
-      "cpu": {
-        "usage": "20%",
-        "process": 120
+    "code": 200,
+    "message": "success",
+    "data": {
+      "hostName": "xxx",
+      "basicMetrics": {
+        "cpu": {
+          "process": 120,
+          "cores": 2
+        },
+        "memory": {
+          "used": 1239,
+          "total": 111203
+        },
+        "userRatio": 20,
+        "systemRatio": 20,
+        "idleRatio": 60,
+        "disk": {
+          "used": 60,
+          "total": 256
+        }
       },
-      "memory": {
-        "usage": "1239 MB",
-        "total": "111203 MB"
-      },
-      "jvm": {},
-      "disk": {
-        "usage": "60 GB",
-        "total": "256 GB"
-      }
-    },
-    "rules": {}
+      "rules": {}
+    }
   }
   ```
 
-  Return code:
+  ### 1. Get Node's Related Trace
 
-  ```son
-  200 - OK
+  > 获取某个节点相关的trace
+
+  API
+
+  Request
+
+  ```json
+  method: GET
+  url: /getNodeRelatedTrace
+  params: {
+    "id": "nodeID"
+  }
   ```
+
+  Response
+
+  ```
+  {
+    "code": 200,
+    "message": "success",
+    "data": {
+      TBD
+    }
+  }
+  ```
+
+  ## Visualize Page
+
+  ### 0. Get Rule list
+
+  > 根据用户权限，获取已创建的所有Rules
+
+  API
+
+  Request
+
+  ```json
+  method: GET
+  url: /getRuleList
+  params: {
+    "user": "soeid"
+  }
+  ```
+
+  Response
+
+  ```json
+  {
+    "code": 200,
+    "message": "success",
+    "data": {
+      "ruleList": [
+        {
+          "ruleName": "",
+          "nodeId": "nodeID",
+          "type": "metric",
+          "app": "appName",
+          "server": "serverName"
+        },
+        {
+          "ruleName": "",
+          "nodeId": "nodeID",
+          "type": "metric",
+          "app": "appName",
+          "server": "serverName"
+        },
+        {
+          "ruleName": "",
+          "type": "metric",
+          "nodeId": "nodeID",
+          "app": "appName",
+          "server": "serverName"
+        }
+      ]
+    }
+  }
+  ```
+
+  ### 1. Create a new rule
+
+  > 创建一条新的rule
+
+  API
+
+  Request
+
+  ```
+  method: POST
+  url: /createRule
+  params: {
+    TBD
+  }
+  ```
+
+  Response
+
+  ```
+  {
+    "code": 200,
+    "message": "success",
+    "data": {
+      TBD
+    }
+  }
+  ```
+
+  ​
