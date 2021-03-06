@@ -31,17 +31,17 @@ import { useLocation } from 'react-router-dom'
 
 const TheHeader = () => {
   const dispatch = useDispatch()
-  const sidebarShow = useSelector(state => state.sidebarShow)
+  const sidebarShow = useSelector(state => state.sidebar.sidebarShow)
   const currentPath = useLocation().pathname;
 
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
-    dispatch({type: 'set', sidebarShow: val})
+    dispatch({type: 'SET_SIDEBAR_SHOW', sidebarShow: val})
   }
 
   const toggleSidebarMobile = () => {
     const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
-    dispatch({type: 'set', sidebarShow: val})
+    dispatch({type: 'SET_SIDEBAR_SHOW', sidebarShow: val})
   }
 
   return (
