@@ -22,7 +22,8 @@ import CIcon from '@coreui/icons-react'
 import { DocsLink } from 'src/reusable'
 import './Modal.less';
 import types from './chart-types';
-import sources from './data-sources'
+import sources from './data-sources';
+import { withRouter } from 'react-router-dom';
 
 const Modals = (props) => {
   const [card, setCard] = useState(null);
@@ -39,6 +40,10 @@ const Modals = (props) => {
   }
   const goBackStepOne =() => {
     setStep(1);
+  }
+
+  const createVisualization = (e, source) => {
+    props.history.push(`/visualize/create?type=metric&sourceId=${source.id}&sourceName=${source.name}`);
   }
 
   return (
@@ -80,7 +85,7 @@ const Modals = (props) => {
               sources.map((source) => {
                 return (
                   <li className="list-item" key={source.id}>
-                    <button className="list-item-btn">{source.name}</button>
+                    <button className="list-item-btn" onClick={(e) => createVisualization(e, source)}>{source.name}</button>
                   </li>
                 )
               })
@@ -92,4 +97,4 @@ const Modals = (props) => {
   )
 }
 
-export default Modals
+export default withRouter(Modals)
