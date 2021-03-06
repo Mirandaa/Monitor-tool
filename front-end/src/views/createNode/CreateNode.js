@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux'
 import {
     CButton,
     CCard,
@@ -9,13 +10,19 @@ import {
     CFormGroup,
     CFormText,
     CTextarea,
+    CToastHeader,
+    CToastBody,
     CInput,
     CLabel,
-    CInvalidFeedback
+    CInvalidFeedback,
+    CToast,
+    CToaster
   } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { createNode } from 'src/api/index'
 
 const CreateNode = () => {
+    const userSoeid = useSelector(state => state.user.userSoeid)
     const [appName, setAppName] = useState("");
     const [hostName, setHostName] = useState("");
     const [owner, setOwner] = useState("");
@@ -23,22 +30,29 @@ const CreateNode = () => {
     const [groupMail, setGroupMail] = useState("");
     const [desciption, setDesciption] = useState("");
 
-    const createNodeReq = async (e) => {
+    // const [toastShow, setToastShow] = useState(false);
+
+    const createNodeReq = (e) => {
         let forms = document.querySelectorAll('.needs-validation')
         forms[0].classList.add('was-validated')
+        if (!forms[0].checkValidity()) {
+            return;
+        }
 
         const payload = {
+            userName: userSoeid,
             appName: appName,
             hostName: hostName,
-            owner: owner,
-            group: group,
-            groupMail: groupMail,
-            desciption: desciption
+            appOwner: owner,
+            appGroup: group,
+            appGroupMail: groupMail,
+            appDesciption: desciption
         }
-        // call api /createNode
+        const res = createNode(payload)
     }
 
-    const resetForm = async (e) => {
+    const resetForm = (e) => {
+        // setToastShow(true)
         let forms = document.querySelectorAll('.needs-validation')
         forms[0].classList.remove('was-validated')
         setAppName("");
@@ -161,6 +175,22 @@ const CreateNode = () => {
                     </CForm>
                 </CCardBody>
             </CCard>
+            {/* <CToaster 
+                position="top-right"
+            >
+                <CToast
+                    show={toastShow}
+                    autohide={1000}
+                    fade={true}
+                    >
+                    <CToastHeader >
+                        Toast title
+                    </CToastHeader>
+                    <CToastBody>
+                        {`This is a toast in  xxx positioned toaster number xx.`}
+                    </CToastBody>
+                </CToast>
+            </CToaster> */}
         </>
     )
 }
