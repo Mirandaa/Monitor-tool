@@ -1,0 +1,52 @@
+.create-panel-container {
+  .btn-wrapper {
+    text-align: right;
+    margin-bottom: 10px;
+    display: block;
+    button:first-child {
+      margin-right: 10px;
+    }
+  }
+}
+
+.collapse-wrapper {
+  background: #F5F7FA;
+  padding: 8px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  .trigger-wrapper {
+    display: flex;
+    .collapse-btn {
+      flex: 1;
+      margin: 0;
+      border: none;
+      outline: none;  
+      background: none;
+      display: block;
+      width: 100%;
+      text-align: left;
+      color: rgb(52, 55, 65);
+      border-radius: 4px;
+    }
+    .close-btn {
+      flex: 0;
+    }
+    .collapse-btn:hover {
+      text-decoration: underline;
+    }
+    .collapse-title {
+      color: #3c4b64;
+    }
+  }
+  .child-wrapper {
+    padding: 6px;
+    .label {
+      font-size: 10px;
+      font-weight: bold;
+    }
+  }
+}
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+}

@@ -21,27 +21,29 @@ import CIcon from '@coreui/icons-react'
 // routes config
 import routes from '../routes'
 
-import { 
+import {
   TheHeaderDropdown,
   // TheHeaderDropdownMssg,
   TheHeaderDropdownNotif,
   TheHeaderDropdownTasks
-}  from './index'
-import { useLocation } from 'react-router-dom'
+} from './index'
+import { useLocation } from 'react-router-dom';
+import * as QueryString from 'query-string';
 
 const TheHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector(state => state.sidebar.sidebarShow)
   const currentPath = useLocation().pathname;
+  const currentSearch = useLocation().search;
 
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
-    dispatch({type: 'SET_SIDEBAR_SHOW', sidebarShow: val})
+    dispatch({ type: 'SET_SIDEBAR_SHOW', sidebarShow: val })
   }
 
   const toggleSidebarMobile = () => {
     const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
-    dispatch({type: 'SET_SIDEBAR_SHOW', sidebarShow: val})
+    dispatch({ type: 'SET_SIDEBAR_SHOW', sidebarShow: val })
   }
 
   return (
@@ -57,7 +59,7 @@ const TheHeader = () => {
         onClick={toggleSidebar}
       />
       <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="48" alt="Logo"/>
+        <CIcon name="logo" height="48" alt="Logo" />
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
@@ -73,18 +75,18 @@ const TheHeader = () => {
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
-        <TheHeaderDropdownNotif/>
-        <TheHeaderDropdownTasks/>
+        <TheHeaderDropdownNotif />
+        <TheHeaderDropdownTasks />
         {/* <TheHeaderDropdownMssg/> */}
-        <TheHeaderDropdown/>
+        <TheHeaderDropdown />
       </CHeaderNav>
 
       <CSubheader className="px-3 justify-content-between">
-        <CBreadcrumbRouter 
-          className="border-0 c-subheader-nav m-0 px-0 px-md-3" 
-          routes={routes} 
+        <CBreadcrumbRouter
+          className="border-0 c-subheader-nav m-0 px-0 px-md-3"
+          routes={routes}
         />
-        {currentPath === '/dashboard/123' ? 
+        {currentPath === '/dashboard/123' ?
           <div className="d-md-down-none mfe-2 c-subheader-nav">
             <CDropdown className="c-subheader-nav-link">
               <CDropdownToggle >
@@ -92,9 +94,9 @@ const TheHeader = () => {
               </CDropdownToggle>
               <CDropdownMenu>
                 <CDropdownItem>
-                  <CLink 
-                    className="c-subheader-nav-link" 
-                    aria-current="page" 
+                  <CLink
+                    className="c-subheader-nav-link"
+                    aria-current="page"
                     to="/xxx-app1"
                   >
                     App-1
@@ -102,9 +104,9 @@ const TheHeader = () => {
                 </CDropdownItem>
                 {/* <CDropdownDivider /> */}
                 <CDropdownItem>
-                  <CLink 
-                    className="c-subheader-nav-link" 
-                    aria-current="page" 
+                  <CLink
+                    className="c-subheader-nav-link"
+                    aria-current="page"
                     to="/xxx-app2"
                   >
                     App-2
@@ -123,7 +125,12 @@ const TheHeader = () => {
               <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings
             </CLink>
           </div>
-        : null} 
+          : null}
+        {currentPath.search('/visualize/create') !== -1 ?
+          <div className="d-md-down-none mfe-2 c-subheader-nav" style={{ fontWeight: 'bold' }}>
+            {`Current Node: ${QueryString.parse(currentSearch).sourceName}`}
+          </div>
+          : null}
       </CSubheader>
     </CHeader>
   )

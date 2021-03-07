@@ -4,24 +4,11 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
-  CCol,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-  CRow,
-  CCardFooter,
-  CSwitch,
-  CBadge,
   CInput,
-  CListGroup,
-  CListGroupItem,
   CCollapse,
   CForm,
   CFormGroup,
   CLabel,
-  CFormText,
   CSelect
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react'
@@ -30,7 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { bucktesAggregationTypeList } from '@/constants';
 
 const BucketsCard = (props) => {
-  const [metrics, setMetrics] = useState([
+  const [buckets, setBuckets] = useState([
     {
       id: uuidv4(),
       aggregation: 'filters',
@@ -41,21 +28,21 @@ const BucketsCard = (props) => {
   ]);
 
   const toggle = (id) => {
-    const metricsCopy = metrics.slice();
-    metricsCopy.map(item => {
+    const bucketsCopy = buckets.slice();
+    bucketsCopy.map(item => {
       if (item.id === id) {
         item.collapse = !item.collapse;
       }
       return item;
     })
-    setMetrics(metricsCopy);
+    setBuckets(bucketsCopy);
   }
 
   const addMetric = () => {
-    const metrics1 = metrics.slice().map((item) => {
+    const buckets1 = buckets.slice().map((item) => {
       return { ...item, collapse: false }
     });
-    setMetrics([...metrics1, {
+    setBuckets([...buckets1, {
       id: uuidv4(),
       aggregation: 'average',
       field: '',
@@ -65,22 +52,22 @@ const BucketsCard = (props) => {
   };
 
   const deleteMetric = (id) => {
-    const index = metrics.findIndex(item => item.id === id);
-    const metricsCopy = metrics.slice();
-    metricsCopy.splice(index, 1)
-    console.log(metricsCopy);
-    setMetrics(metricsCopy);
+    const index = buckets.findIndex(item => item.id === id);
+    const bucketsCopy = buckets.slice();
+    bucketsCopy.splice(index, 1)
+    console.log(bucketsCopy);
+    setBuckets(bucketsCopy);
   };
 
   const updateMetric = (metric, field, value) => {
-    const metricsCopy = metrics.slice();
-    metricsCopy.map(item => {
+    const bucketsCopy = buckets.slice();
+    bucketsCopy.map(item => {
       if (item.id === metric.id) {
         item[field] = value;
       }
       return item;
     });
-    setMetrics(metricsCopy);
+    setBuckets(bucketsCopy);
   };
 
   const aggregationSelectChange = (e, metric) => {
@@ -102,7 +89,7 @@ const BucketsCard = (props) => {
       </CCardHeader>
       <CCardBody>
         {
-          metrics.map((metric) => {
+          buckets.map((metric) => {
             return (
               <div className="collapse-wrapper" key={metric.id}>
                 <div className="trigger-wrapper">
@@ -125,7 +112,7 @@ const BucketsCard = (props) => {
                   show={metric.collapse}
                 >
                   <div className="child-wrapper">
-                    <CForm action="" method="post">
+                    <CForm>
                       <CFormGroup>
                         <CLabel htmlFor="aggregationSelect" className="label">Aggregation</CLabel>
                         <CSelect custom name="aggregationSelect" id="aggregationSelect" value={metric.aggregation} onChange={(e) => aggregationSelectChange(e, metric)}>
@@ -173,9 +160,8 @@ const BucketsCard = (props) => {
             )
           })
         }
-
         <div className="btn-wrapper">
-          <CButton size="sm" color="primary" onClick={addMetric}>add</CButton>
+          <CButton size="sm" color="primary" variant="outline" onClick={addMetric}>add</CButton>
         </div>
       </CCardBody>
     </CCard>

@@ -4,24 +4,11 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
-  CCol,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-  CRow,
-  CCardFooter,
-  CSwitch,
-  CBadge,
   CInput,
-  CListGroup,
-  CListGroupItem,
   CCollapse,
   CForm,
   CFormGroup,
   CLabel,
-  CFormText,
   CSelect
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react'
@@ -175,7 +162,7 @@ const MetricsCard = (props) => {
         }
 
         <div className="btn-wrapper">
-          <CButton size="sm" color="primary" onClick={addMetric}>add</CButton>
+          <CButton size="sm" color="primary" variant="outline" onClick={addMetric}>add</CButton>
         </div>
       </CCardBody>
     </CCard>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-  CBadge,
   CCard,
   CCardBody,
   CCardHeader,
@@ -12,21 +11,11 @@ import {
 import Modal from './modal/Modal';
 
 import data from './visualize-list'
-import { Model } from 'echarts';
 
-const getBadge = status => {
-  switch (status) {
-    case 'Active': return 'success'
-    case 'Inactive': return 'secondary'
-    case 'Pending': return 'warning'
-    case 'Banned': return 'danger'
-    default: return 'primary'
-  }
-}
-const fields = ['app', 'server', 'owner', 'rulesCount', {
+const fields = ['app', 'server', 'owner', 'rulesCount', 'modifyWhen', 'modifyBy', {
   key: 'action',
   label: 'Action',
-  _style: { width: '1%' },
+  _style: { width: '10%' },
   sorter: false,
   filter: false
 }]
@@ -54,29 +43,31 @@ const Visualize = () => {
                 tableFilter
                 columnFilter
                 scopedSlots={{
-                  'status':
-                    (item) => (
-                      <td>
-                        <CBadge color={getBadge(item.status)}>
-                          {item.status}
-                        </CBadge>
-                      </td>
-                    ),
                   'action':
-                    (item, index)=>{
+                    (item, index) => {
                       return (
-                        <td className="py-2">
+                        <td>
                           <CButton
                             color="primary"
                             variant="outline"
                             shape="square"
                             size="sm"
                             // onClick={()=>{toggleDetails(index)}}
+                            style={{ marginRight: 10 }}
                           >
                             edit
                           </CButton>
+                          <CButton
+                            color="secondary"
+                            variant="outline"
+                            shape="square"
+                            size="sm"
+                          // onClick={()=>{toggleDetails(index)}}
+                          >
+                            delete
+                          </CButton>
                         </td>
-                        )
+                      )
                     }
                 }}
               />
