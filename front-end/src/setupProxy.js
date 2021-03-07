@@ -9,6 +9,10 @@ module.exports = function(app) {
         {
             path: '/createTrace',
             target: 'http://101.132.128.77:8080'
+        },
+        {
+            path: '/commonMetrics',
+            target: 'http://chance2018.imwork.net'
         }
     ])
 }
