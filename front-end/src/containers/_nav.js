@@ -27,12 +27,12 @@ const _nav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',
-    to: '/dashboard/123',
+    to: '/dashboard',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    }
+    // badge: {
+    //   color: 'info',
+    //   text: 'NEW',
+    // }
   },
   // {
   //   _tag: 'CSidebarNavTitle',
@@ -330,5 +330,6 @@ const _nav = [
   //   className: 'm-2'
   // }
 ]
+
 
 export default _nav
