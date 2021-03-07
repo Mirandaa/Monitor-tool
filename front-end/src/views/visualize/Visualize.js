@@ -23,7 +23,7 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['title', 'type', 'app', 'server', {
+const fields = ['app', 'server', 'owner', 'rulesCount', {
   key: 'action',
   label: 'Action',
   _style: { width: '1%' },

@@ -1,6 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import * as QueryString from 'query-string';
-import MetricPanel from './MetricPanel';
+import MetricPanel from './metricPanel/MetricPanel';
 
 const CreatePanel = (props) => {
   const panelType = QueryString.parse(props.location.search).type;
