@@ -3,6 +3,14 @@ const proxy = require('http-proxy-middleware')
 module.exports = function(app) {
     applyProxys(app, [
         {
+            path: '/all',
+            target: 'http://101.132.128.77:8080'
+        },
+        {
+            path: '/node',
+            target: 'http://101.132.128.77:8080'
+        },
+        {
             path: '/create',
             target: 'http://101.132.128.77:8080'
         },

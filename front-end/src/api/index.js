@@ -7,6 +7,23 @@ export function getExampleData() {
   })
 }
 
+export async function getAllNodes() {
+  return await request({
+    url: '/all',
+    method: 'get'
+  })
+}
+
+export async function getAllTraces(nodeId) {
+  return await request({
+    url: '/node',
+    method: 'get',
+    params: {
+      nodeId: nodeId
+    }
+  })
+}
+
 export function createNode(nodeParams) {
   return request({
     url: '/create',
