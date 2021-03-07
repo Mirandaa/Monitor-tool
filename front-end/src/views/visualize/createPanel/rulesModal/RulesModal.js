@@ -6,7 +6,7 @@ import {
   CModalTitle,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import './Modal.less';
+import './RulesModal.less';
 import types from './rule-types';
 import { withRouter } from 'react-router-dom';
 
