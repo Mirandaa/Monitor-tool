@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import {
     CCardGroup,
     CCard,
@@ -13,7 +14,9 @@ import { getNodeInfo } from 'src/api/index'
 import { conver } from 'src/utils/utils'
 
 const BasicIndex = () => {
-    const [nodeID, setNodeID] = useState('test#10-23-116-240')
+    const dispatch = useDispatch()
+    const currentNode = useSelector(state => state.node)
+    
     const [commonMetrics, setCommonMetrics] = useState({
         hostname: '',
         hostIP: '',
@@ -32,24 +35,26 @@ const BasicIndex = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const resData = await getNodeInfo(nodeID);
+            const resData = await getNodeInfo(currentNode.nodeId);
             console.log(resData)
             setCommonMetrics(resData)
         }
 
         fetchData()
-    }, [])
+    }, [currentNode.nodeId])
 
     return (
         <>
-        {/* <div>{commonMetrics.hostname} <CBadge className="mr-1" color="success">Success</CBadge></div>
-        <p className="mb-2">IP: {commonMetrics.hostIP}</p> */}
         <CCardGroup className="mb-4">
-            <CCallout color="success">
+            <CCallout color={currentNode.nodeStatus === 1 ? 'success'
+                : currentNode.nodeStatus === 2 ? 'warning'
+                : 'danger'}
+            >
+                <div className="mt-2">
                 <CIcon className="mr-1" name="cil-storage" height="16"/>
-                <strong className="text-muted" >{commonMetrics.hostname}</strong>
-                <br />
+                <strong className="text-muted" >{commonMetrics.hostname ? commonMetrics.hostname : 'No Server'}</strong>
                 <p>{commonMetrics.hostIP}</p>
+                </div>
             </CCallout>
             <CCard>
                 <CCardBody>
@@ -67,7 +72,7 @@ const BasicIndex = () => {
                         <b>Memory Usage</b>
                         <CIcon className="card-header-actions" name="cil-memory" height="24"/>
                     </div>
-                    <CProgress className="mb-1" size="xs" color="warning" value={(commonMetrics.memoryUsed / commonMetrics.memoryTotal) * 100} />
+                    <CProgress className="mb-1" size="xs" color="warning" value={commonMetrics.memoryTotal ? (commonMetrics.memoryUsed / commonMetrics.memoryTotal) * 100 : 0} />
                     <small className="text-muted">{conver(commonMetrics.memoryUsed)} / {conver(commonMetrics.memoryTotal)}</small>
                 </CCardBody>
             </CCard>
@@ -87,7 +92,7 @@ const BasicIndex = () => {
                         <b>Disk Usage</b>
                         <CIcon className="card-header-actions" name="cil-save" height="24"/>
                     </div>
-                    <CProgress className="mb-1" size="xs" color="info" value={(commonMetrics.diskUsed / commonMetrics.diskTotal) * 100} />
+                    <CProgress className="mb-1" size="xs" color="info" value={commonMetrics.diskTotal ? (commonMetrics.diskUsed / commonMetrics.diskTotal) * 100 : 0} />
                     <small className="text-muted">{conver(commonMetrics.diskUsed)} / {conver(commonMetrics.diskTotal)}</small>
                 </CCardBody>
             </CCard>

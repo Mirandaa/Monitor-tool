@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CDropdown,
@@ -28,11 +28,14 @@ import {
   TheHeaderDropdownTasks
 }  from './index'
 import { useLocation } from 'react-router-dom'
+import { getAllNodes } from "src/api/index";
 
 const TheHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector(state => state.sidebar.sidebarShow)
-  const currentPath = useLocation().pathname;
+  const currentNodeId = useSelector(state => state.node.nodeId)
+  const [nodeList, setNodeList] = useState([])
+  const currentPath = useLocation().pathname
 
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
@@ -42,6 +45,24 @@ const TheHeader = () => {
   const toggleSidebarMobile = () => {
     const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
     dispatch({type: 'SET_SIDEBAR_SHOW', sidebarShow: val})
+  }
+
+  const getNodeList = () => {
+    const fetchData = async () => {
+      let allNodes = await getAllNodes()
+      let newNodeList = []
+  
+      if (allNodes) {
+        allNodes.map(async (node) => {
+          newNodeList.push({
+            nodeId: node.nodeId,
+            nodeStatus: node.status
+          })
+        })
+        setNodeList(newNodeList)
+      }
+    }
+    fetchData()
   }
 
   return (
@@ -60,19 +81,7 @@ const TheHeader = () => {
         <CIcon name="logo" height="48" alt="Logo"/>
       </CHeaderBrand>
 
-      <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3" >
-          <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
-        </CHeaderNavItem>
-        {/* <CHeaderNavItem  className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem> */}
-        {/* <CHeaderNavItem className="px-3">
-          <CHeaderNavLink>Settings</CHeaderNavLink>
-        </CHeaderNavItem> */}
-      </CHeaderNav>
-
-      <CHeaderNav className="px-3">
+      <CHeaderNav className="ml-auto px-3">
         <TheHeaderDropdownNotif/>
         <TheHeaderDropdownTasks/>
         {/* <TheHeaderDropdownMssg/> */}
@@ -84,44 +93,35 @@ const TheHeader = () => {
           className="border-0 c-subheader-nav m-0 px-0 px-md-3" 
           routes={routes} 
         />
-        {currentPath === '/dashboard/123' ? 
+        {['/dashboard', '/visualize'].includes(currentPath) ? 
           <div className="d-md-down-none mfe-2 c-subheader-nav">
             <CDropdown className="c-subheader-nav-link">
-              <CDropdownToggle >
-                <CIcon name="cil-graph" alt="Dashboard" />&nbsp;App1_Server1
+              <CDropdownToggle onClick={getNodeList}>
+                <CIcon name="cil-graph" alt="Dashboard" />&nbsp;{currentNodeId}
               </CDropdownToggle>
               <CDropdownMenu>
-                <CDropdownItem>
-                  <CLink 
-                    className="c-subheader-nav-link" 
-                    aria-current="page" 
-                    to="/xxx-app1"
-                  >
-                    App-1
-                  </CLink>
-                </CDropdownItem>
-                {/* <CDropdownDivider /> */}
-                <CDropdownItem>
-                  <CLink 
-                    className="c-subheader-nav-link" 
-                    aria-current="page" 
-                    to="/xxx-app2"
-                  >
-                    App-2
-                  </CLink>
-                </CDropdownItem>
+                {nodeList.map((node, index) => {
+                  return (
+                  <CDropdownItem key={node+index}>
+                    <CLink 
+                      className="c-subheader-nav-link" 
+                      aria-current="page" 
+                      onClick={e => {
+                        dispatch({type: 'SET_CURRENT_NODE', nodeId: node.nodeId})
+                        dispatch({type: 'SET_NODE_STATUS', nodeStatus: node.status})
+                      }}
+                      to="/dashboard"
+                    >
+                      {node.nodeId}
+                    </CLink>
+                  </CDropdownItem>
+                  )
+                })}
               </CDropdownMenu>
             </CDropdown>
-            {/* <CLink 
-              className="c-subheader-nav-link" 
-              aria-current="page" 
-              to="/dashboard"
-            >
-              <CIcon name="cil-graph" alt="Dashboard" />&nbsp;Dashboard
-            </CLink> */}
-            <CLink className="c-subheader-nav-link" href="#">
+            {/* <CLink className="c-subheader-nav-link" href="#">
               <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings
-            </CLink>
+            </CLink> */}
           </div>
         : null} 
       </CSubheader>

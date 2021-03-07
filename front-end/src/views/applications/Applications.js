@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux'
 import ReactECharts from "echarts-for-react";
 import { withRouter } from 'react-router-dom';
 import { getAllNodes, getAllTraces } from "../../api";
 
 const Page = (props) => {
+  const dispatch = useDispatch()
+
   const [option, setOption] = useState({});
   const [nodes, setNodes] = useState([]);
   const [links, setLinks] = useState([]);
   const [categories, setCategories] = useState([
+    {
+      name: "Blue"
+    },
     {
       name: "Green"
     },
@@ -18,6 +24,8 @@ const Page = (props) => {
       name: "Red"
     }
   ]);
+
+  const [showLoading, setShowLoading] = useState(true)
 
   const getAllNodesData = async () => {
     let allNodes = await getAllNodes()
@@ -52,20 +60,21 @@ const Page = (props) => {
   }
 
   function getNodeHealth(nodeStatus) {
-    return nodeStatus === 'green' ? 0
-      : nodeStatus === 'yellow' ? 1
-      : 2
+    return nodeStatus === 'green' ? 1
+      : nodeStatus === 'yellow' ? 2
+      : 3
   }
 
   useEffect(() => {
     const fetchData = async () => {
       await getAllNodesData()
+      setShowLoading(false)
       setOption({
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
-            var nodeStatus = params.data.category === 0 ? '<span class="badge badge-success">Green</span>'
-              : params.data.category === 1 ? '<span class="badge badge-warning">Yellow</span>'
+            var nodeStatus = params.data.category === 1 ? '<span class="badge badge-success">Green</span>'
+              : params.data.category === 2 ? '<span class="badge badge-warning">Yellow</span>'
               : '<span class="badge badge-danger">Red</span>'
             var res = `
             <p style="font-weight: bold; line-height: 20px;">${params.data.id}</p>
@@ -117,7 +126,10 @@ const Page = (props) => {
   }, []);
 
   const onClick = (e) => {
-    props.history.push('/dashboard/123');
+    // console.log('click event', e)
+    dispatch({type: 'SET_CURRENT_NODE', nodeId: e.data.id})
+    dispatch({type: 'SET_NODE_STATUS', nodeStatus: e.data.category})
+    props.history.push('/dashboard');
   };
 
   const onEvents = {
@@ -127,8 +139,9 @@ const Page = (props) => {
   return (
     <ReactECharts
       option={option}
-      style={{ height: "700px", width: "100%" }}
+      style={{ height: "500px", width: "100%" }}
       onEvents={onEvents}
+      showLoading={showLoading}
     />
   );
 };
