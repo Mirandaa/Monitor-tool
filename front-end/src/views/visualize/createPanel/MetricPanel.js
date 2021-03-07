@@ -25,26 +25,51 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react'
 import './MetricPanel.less';
+import { v4 as uuidv4 } from 'uuid';
 
 const MetricPanel = (props) => {
-  const [collapse, setCollapse] = useState(false);
-  const [collapse2, setCollapse2] = useState(false);
+  const [metrics, setMetrics] = useState([
+    {
+      id: uuidv4(),
+      aggregation: '',
+      coustomLable: '',
+      collapse: true
+    }
+  ]);
 
-  const onEntering = () => {};
-  const onEntered = () => {};
-  const onExiting = () => {};
-  const onExited = () => {};
+  const onEntering = () => { };
+  const onEntered = () => { };
+  const onExiting = () => { };
+  const onExited = () => { };
 
-  const toggle = (e)=>{
-    setCollapse(!collapse);
-    e.preventDefault();
+  const toggle = (id) => {
+    const metricsCopy = metrics.slice();
+    metricsCopy.map(item => {
+      if(item.id === id) {
+        item.collapse = !item.collapse;
+      }
+      return item;
+    })
+    console.log(metricsCopy);
+    setMetrics(metricsCopy);
   }
 
-  // inner
-  const toggle2 = (e)=>{
-    setCollapse2(!collapse2);
-    e.preventDefault();
-  }
+  const addMetric = () => {
+    setMetrics([...metrics, {
+      id: uuidv4(),
+      aggregation: '',
+      coustomLable: '',
+      collapse: true
+    }])
+  };
+
+  const deleteMetric = (id) => {
+    const index = metrics.findIndex(item => item.id === id);
+    const metricsCopy = metrics.slice();
+    metricsCopy.splice(index, 1)
+    console.log(metricsCopy);
+    setMetrics(metricsCopy);
+  };
 
   return (
     <div className="panel-container">
@@ -58,58 +83,65 @@ const MetricPanel = (props) => {
               Metrics
             </CCardHeader>
             <CCardBody>
-              <div className="collapse-wrapper">
-                <div className="trigger-wrapper">
-                  <button
-                    color="primary"
-                    onClick={toggle}
-                    className="collapse-btn"
-                  >
-                    Metric
-                  </button>
-                  <button
-                    color="primary"
-                    // onClick={toggle}
-                    className="collapse-btn close-btn"
-                  >
-                    <CIcon name="cil-X"></CIcon>
-                  </button>
-                </div>
-                <CCollapse
-                  show={collapse}
-                  onEntering={onEntering}
-                  onEntered={onEntered}
-                  onExiting={onExiting}
-                  onExited={onExited}
-                >
-                  <div className="child-wrapper">
-                    <CForm action="" method="post">
-                      <CFormGroup>
-                        <CLabel htmlFor="nf-email" className="label">Aggregation</CLabel>
-                        <CInput
-                          type="email"
-                          id="nf-email"
-                          name="nf-email"
-                          placeholder=""
-                          autoComplete="email"
-                        />
-                      </CFormGroup>
-                      <CFormGroup>
-                        <CLabel htmlFor="nf-password" className="label">Custom label</CLabel>
-                        <CInput
-                          type="password"
-                          id="nf-password"
-                          name="nf-password"
-                          placeholder=""
-                          autoComplete="current-password"
-                        />
-                      </CFormGroup>
-                    </CForm>
-                  </div>
-                </CCollapse>
-                <div>
-                  <CButton size="sm" color="primary">add</CButton>
-                </div>
+              {
+                metrics.map((item) => {
+                  return (
+                    <div className="collapse-wrapper" key={item.id}>
+                      <div className="trigger-wrapper">
+                        <button
+                          color="primary"
+                          onClick={e => toggle(item.id)}
+                          className="collapse-btn"
+                        >
+                          Metric
+                        </button>
+                        <button
+                          color="primary"
+                          onClick={e => deleteMetric(item.id)}
+                          className="collapse-btn close-btn"
+                        >
+                          <CIcon name="cil-X"></CIcon>
+                        </button>
+                      </div>
+                      <CCollapse
+                        show={item.collapse}
+                        onEntering={onEntering}
+                        onEntered={onEntered}
+                        onExiting={onExiting}
+                        onExited={onExited}
+                      >
+                        <div className="child-wrapper">
+                          <CForm action="" method="post">
+                            <CFormGroup>
+                              <CLabel htmlFor="nf-email" className="label">Aggregation</CLabel>
+                              <CInput
+                                type="email"
+                                id="nf-email"
+                                name="nf-email"
+                                placeholder=""
+                                autoComplete="email"
+                              />
+                            </CFormGroup>
+                            <CFormGroup>
+                              <CLabel htmlFor="nf-password" className="label">Custom label</CLabel>
+                              <CInput
+                                type="password"
+                                id="nf-password"
+                                name="nf-password"
+                                placeholder=""
+                                autoComplete="current-password"
+                              />
+                            </CFormGroup>
+                          </CForm>
+                        </div>
+                      </CCollapse>
+                    </div>
+                  )
+                })
+              }
+
+              <div className="btn-wrapper">
+                <CButton size="sm" color="primary" onClick={addMetric}>add</CButton>
               </div>
             </CCardBody>
           </CCard>
