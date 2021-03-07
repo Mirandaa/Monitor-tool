@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useStore } from 'react-redux'
 import {
     CButton,
     CCard,
@@ -10,7 +10,10 @@ import {
     CFormGroup,
     CInput,
     CInvalidFeedback,
-    CLabel
+    CLabel,
+    CToast,
+    CToastHeader,
+    CToastBody
   } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { createTrace } from 'src/api/index'
@@ -28,15 +31,13 @@ const CreateTrace = () => {
     ]);
 
     function fromNodeChangeHandle(event, index) {
-        console.log("fromNodeID", event.target.value)
-        let newSpans = spans
+        let newSpans = spans.slice()
         newSpans[index].fromNodeId = event.target.value
         setSpans(newSpans)
     }
 
     function toNodeChangeHandle(event, index) {
-        console.log("toNodeID", event.target.value)
-        let newSpans = spans
+        let newSpans = spans.slice()
         newSpans[index].toNodeId = event.target.value
         setSpans(newSpans)
     }
@@ -56,6 +57,9 @@ const CreateTrace = () => {
         }
         // call api /createTrace
         const res = createTrace(payload)
+        if (res === true) {
+            // do something
+        }
     }
 
     const resetForm = async (e) => {

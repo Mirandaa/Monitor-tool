@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import {
-    CButton,
     CCardGroup,
     CCard,
     CCardBody,
+    CCallout,
+    CCol,
+    CRow,
     CProgress
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { getNodeInfo } from 'src/api/index'
+import { conver } from 'src/utils/utils'
 
 const BasicIndex = () => {
-    const [nodeID, setNodeID] = useState('')
+    const [nodeID, setNodeID] = useState('test#10-23-116-240')
     const [commonMetrics, setCommonMetrics] = useState({
         hostname: '',
         hostIP: '',
@@ -30,6 +33,7 @@ const BasicIndex = () => {
     useEffect(() => {
         const fetchData = async () => {
             const resData = await getNodeInfo(nodeID);
+            console.log(resData)
             setCommonMetrics(resData)
         }
 
@@ -38,8 +42,15 @@ const BasicIndex = () => {
 
     return (
         <>
-        <h5 className="mb-2">Host: {commonMetrics.hostIP} | {commonMetrics.hostname}</h5>
+        {/* <div>{commonMetrics.hostname} <CBadge className="mr-1" color="success">Success</CBadge></div>
+        <p className="mb-2">IP: {commonMetrics.hostIP}</p> */}
         <CCardGroup className="mb-4">
+            <CCallout color="success">
+                <CIcon className="mr-1" name="cil-storage" height="16"/>
+                <strong className="text-muted" >{commonMetrics.hostname}</strong>
+                <br />
+                <p>{commonMetrics.hostIP}</p>
+            </CCallout>
             <CCard>
                 <CCardBody>
                     <div className="mb-2">
@@ -57,7 +68,7 @@ const BasicIndex = () => {
                         <CIcon className="card-header-actions" name="cil-memory" height="24"/>
                     </div>
                     <CProgress className="mb-1" size="xs" color="warning" value={(commonMetrics.memoryUsed / commonMetrics.memoryTotal) * 100} />
-                    <small className="text-muted">11444GB / 16384MB</small>
+                    <small className="text-muted">{conver(commonMetrics.memoryUsed)} / {conver(commonMetrics.memoryTotal)}</small>
                 </CCardBody>
             </CCard>
             {/* <CCard>
@@ -77,43 +88,50 @@ const BasicIndex = () => {
                         <CIcon className="card-header-actions" name="cil-save" height="24"/>
                     </div>
                     <CProgress className="mb-1" size="xs" color="info" value={(commonMetrics.diskUsed / commonMetrics.diskTotal) * 100} />
-                    <small className="text-muted">60.9 GB / 256 GB</small>
+                    <small className="text-muted">{conver(commonMetrics.diskUsed)} / {conver(commonMetrics.diskTotal)}</small>
                 </CCardBody>
             </CCard>
         </CCardGroup>
         <CCard>
             <CCardBody>
-                <div className="progress-group">
-                    <div className="progress-group-header">
-                        <CIcon className="progress-group-icon" name="cil-user" />
-                        <span className="title">User Ratio</span>
-                        <span className="ml-auto font-weight-bold">{commonMetrics.userRatio} %</span>
-                    </div>
-                    <div className="progress-group-bars">
-                        <CProgress className="progress-xs" color="success" value={commonMetrics.userRatio} />
-                    </div>
-                </div>
-
-                <div className="progress-group">
-                    <div className="progress-group-header">
-                        <CIcon name="cil-monitor" className="progress-group-icon" />
-                        <span className="title">System Ratio</span>
-                        <span className="ml-auto font-weight-bold">{commonMetrics.systemRation} %</span>
-                    </div>
-                    <div className="progress-group-bars">
-                        <CProgress className="progress-xs" color="warning" value={commonMetrics.systemRation} />
-                    </div>
-                </div>
-                <div className="progress-group">
-                    <div className="progress-group-header">
-                        <CIcon name="cil-speedometer" className="progress-group-icon" />
-                        <span className="title">Idle Ratio</span>
-                        <span className="ml-auto font-weight-bold">{commonMetrics.idleRation}%</span>
-                    </div>
-                    <div className="progress-group-bars">
-                        <CProgress className="progress-xs" color="success" value={commonMetrics.idleRation} />
-                    </div>
-                </div>
+                <CRow className="text-center">
+                    <CCol md sm="12" className="mb-0">
+                        <div className="progress-group">
+                            <div className="progress-group-header">
+                                <CIcon className="progress-group-icon" name="cil-user" />
+                                <span className="title">User Ratio</span>
+                                <span className="ml-auto font-weight-bold">{commonMetrics.userRatio} %</span>
+                            </div>
+                            <div className="progress-group-bars">
+                                <CProgress className="progress-xs" color="success" value={commonMetrics.userRatio} />
+                            </div>
+                        </div>
+                    </CCol>
+                    <CCol md sm="12" className="mb-0">
+                        <div className="progress-group">
+                            <div className="progress-group-header">
+                                <CIcon name="cil-monitor" className="progress-group-icon" />
+                                <span className="title">System Ratio</span>
+                                <span className="ml-auto font-weight-bold">{commonMetrics.systemRation} %</span>
+                            </div>
+                            <div className="progress-group-bars">
+                                <CProgress className="progress-xs" color="warning" value={commonMetrics.systemRation} />
+                            </div>
+                        </div>
+                    </CCol>
+                    <CCol md sm="12" className="mb-0">
+                        <div className="progress-group">
+                            <div className="progress-group-header">
+                                <CIcon name="cil-speedometer" className="progress-group-icon" />
+                                <span className="title">Idle Ratio</span>
+                                <span className="ml-auto font-weight-bold">{commonMetrics.idleRation}%</span>
+                            </div>
+                            <div className="progress-group-bars">
+                                <CProgress className="progress-xs" color="success" value={commonMetrics.idleRation} />
+                            </div>
+                        </div>
+                    </CCol>
+                </CRow>
             </CCardBody>
         </CCard>
       </>
