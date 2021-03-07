@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import { withRouter } from 'react-router-dom';
 import { getExampleData, getAllNodes, getAllTraces } from "../../api";
-import data from './example-data';
 
 const Page = (props) => {
   const [option, setOption] = useState({});
@@ -29,13 +28,13 @@ const Page = (props) => {
       allNodes.map(async (node) => {
         graphNodes.push({
           id: node.nodeId,
+          name: node.nodeId,
           owner: node.addOwner,
           group: node.appGroup,
           email: node.appGroupEmail,
           category: getNodeHealth(node.status)
         })
         let allTraces = await getAllTraces(node.nodeId)
-        console.log(allTraces)
         if (allTraces) {
           allTraces.map((trace) => {
             trace.spans.map(span => {
