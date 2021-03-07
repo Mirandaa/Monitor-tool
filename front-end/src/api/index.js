@@ -16,11 +16,8 @@ export async function getAllNodes() {
 
 export async function getAllTraces(nodeId) {
   return await request({
-    url: '/node',
-    method: 'get',
-    params: {
-      nodeId: nodeId
-    }
+    url: '/node/' + nodeId.replace("#","%23"),
+    method: 'get'
   })
 }
 
