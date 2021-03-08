@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CModal,
   CModalBody,
@@ -7,18 +7,27 @@ import {
   CInput,
 } from '@coreui/react'
 import './Modal.less';
-import sources from './data-sources';
 import { withRouter } from 'react-router-dom';
+import { getAllNodes } from '@/api';
 
 const Modals = (props) => {
+  const [nodes, setNodes] = useState([]);
 
   const handleClickClose = () => {
     props.onClose();
   }
 
   const createVisualization = (e, source) => {
-    props.history.push(`/visualize/create?sourceId=${source.id}&sourceName=${source.name}`);
+    props.history.push(`/visualize/create?host=${source.nodeId.split('#')[0]}&app=${source.nodeId.split('#')[1]}`);
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const allNodes = await getAllNodes();
+      setNodes(allNodes);
+    }
+    fetchData();
+  }, [])
 
   return (
     <CModal
@@ -36,10 +45,10 @@ const Modals = (props) => {
           </div>
           <ul className="source-item list-group">
             {
-              sources.map((source) => {
+              nodes.map((node) => {
                 return (
-                  <li className="list-item" key={source.id}>
-                    <button className="list-item-btn" onClick={(e) => createVisualization(e, source)}>{source.name}</button>
+                  <li className="list-item" key={node.nodeId}>
+                    <button className="list-item-btn" onClick={(e) => createVisualization(e, node)}>{node.nodeId}</button>
                   </li>
                 )
               })

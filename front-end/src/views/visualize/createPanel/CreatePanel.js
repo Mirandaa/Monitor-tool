@@ -1,24 +1,34 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import * as QueryString from 'query-string';
+// import * as QueryString from 'query-string';
 import MetricPanel from './metricPanel/MetricPanel';
 import {
   CButton,
   CCollapse,
-  CAlert
+  CAlert,
+  CModal,
+  CModalBody,
+  CModalHeader,
+  CModalFooter
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react'
-import Modal from './rulesModal/RulesModal';
+import RulesModal from './rulesModal/RulesModal';
 import { v4 as uuidv4 } from 'uuid';
 import './CreatePanel.less';
 
 
 const CreatePanel = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  // const sourceId = QueryString.parse(props.location.search).sourceId;
+  // const host = QueryString.parse(props.location.search).host;
+  // const app = QueryString.parse(props.location.search).app;
   // const sourceName = QueryString.parse(props.location.search).sourceName;
+  const [confirmCancelModal, setConfirmCancelModal] = useState(false);
 
   const [rules, setRules] = useState([]);
+
+  const toggleConfirmCancelModal = ()=>{
+    setConfirmCancelModal(!confirmCancelModal);
+  }
 
   const toggle = (id) => {
     const rulesCopy = rules.slice().map(item => {
@@ -74,14 +84,30 @@ const CreatePanel = (props) => {
 
   return (
     <div className="create-panel-container">
-      <Modal
+      <CModal
+        show={confirmCancelModal}
+        onClose={toggleConfirmCancelModal}
+      >
+        <CModalHeader closeButton>Confirm dialog</CModalHeader>
+        <CModalBody>
+          Are you sure you want to cancel the configurations?
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="primary" onClick={cancelCreateVisualization}>Confirm</CButton>{' '}
+          <CButton
+            color="secondary"
+            onClick={toggleConfirmCancelModal}
+          >Cancel</CButton>
+        </CModalFooter>
+      </CModal>
+      <RulesModal
         show={modalVisible}
         onClose={setModalVisible}
         onSelect={handleSelectRuleType}
       >
-      </Modal>
+      </RulesModal>
       <div className="btn-wrapper">
-        <CButton color="primary" variant="outline" onClick={() => cancelCreateVisualization(true)}>Cancel</CButton>
+        <CButton color="primary" variant="outline" onClick={() => toggleConfirmCancelModal()}>Cancel</CButton>
         <CButton color="primary" onClick={() => saveVisualization()}>Save all</CButton>
       </div>
       <CAlert color="secondary">
