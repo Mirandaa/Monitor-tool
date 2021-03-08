@@ -165,7 +165,7 @@ const CreateTrace = () => {
                     })}
                     <CButton 
                         size="sm"
-                        color="dark"
+                        color="success"
                         variant="outline"
                         onClick={addNewSpan}
                     >

@@ -97,8 +97,9 @@ const TheHeader = () => {
         />
         {['/dashboard'].includes(currentPath) ? 
           <div className="d-md-down-none mfe-2 c-subheader-nav">
+            Current Node: 
             <CDropdown className="c-subheader-nav-link">
-              <CDropdownToggle onClick={getNodeList}>
+              <CDropdownToggle color="light" onClick={getNodeList}>
                 <CIcon name="cil-graph" alt="Dashboard" />&nbsp;{currentNodeId}
               </CDropdownToggle>
               <CDropdownMenu>

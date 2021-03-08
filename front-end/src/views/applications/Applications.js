@@ -52,6 +52,7 @@ const Page = (props) => {
         }
       }
       const newOption = {
+        darkMode: true,
         tooltip: {
           trigger: 'item',
           formatter: function (params) {
@@ -78,7 +79,10 @@ const Page = (props) => {
               return;
             }
             return a.name;
-          })
+          }),
+          textStyle: {
+            color: '#B9B8CE'
+          }
         }],
         series: [
           {
@@ -127,9 +131,9 @@ const Page = (props) => {
   }, []);
 
   const onClick = (e) => {
+    props.history.push('/dashboard');
     dispatch({type: 'SET_CURRENT_NODE', nodeId: e.data.id})
     dispatch({type: 'SET_NODE_STATUS', nodeStatus: e.data.category})
-    props.history.push('/dashboard');
   };
 
   const onEvents = {
