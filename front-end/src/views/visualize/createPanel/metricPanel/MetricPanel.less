@@ -1,0 +1,44 @@
+
+.rule-container {
+  background: #F5F7FA;
+  padding: 0 10px;
+  // overflow-y: auto;
+  .collapse-wrapper {
+    background: #F5F7FA;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    .trigger-wrapper {
+      display: flex;
+      .collapse-btn {
+        flex: 1;
+        margin: 0;
+        border: none;
+        outline: none;  
+        background: none;
+        display: block;
+        width: 100%;
+        text-align: left;
+        color: rgb(52, 55, 65);
+        border-radius: 4px;
+      }
+      .close-btn {
+        flex: 0;
+      }
+      .collapse-btn:hover {
+        text-decoration: underline;
+      }
+    }
+    .child-wrapper {
+      padding: 6px;
+      .label {
+        font-size: 10px;
+        font-weight: bold;
+      }
+    }
+  }
+  .btn-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+}
