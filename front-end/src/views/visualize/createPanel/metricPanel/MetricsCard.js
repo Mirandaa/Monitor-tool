@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CButton,
   CCard,
@@ -20,7 +20,7 @@ const MetricsCard = (props) => {
   const [metrics, setMetrics] = useState([
     {
       id: uuidv4(),
-      aggregation: 'average',
+      aggregation: 'avg',
       field: '',
       coustomLabel: '',
       collapse: true
@@ -68,6 +68,7 @@ const MetricsCard = (props) => {
       return item;
     });
     setMetrics(metricsCopy);
+    props.onChange(metrics);
   };
 
   const aggregationSelectChange = (e, metric) => {
@@ -81,6 +82,10 @@ const MetricsCard = (props) => {
   const fieldChange = (e, metric) => {
     updateMetric(metric, 'field', e.target.value);
   };
+
+  // useEffect(() => {
+  //   props.onChange(metrics);
+  // }, [props, metrics])
 
   return (
     <CCard>

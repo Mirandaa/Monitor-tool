@@ -50,7 +50,7 @@ const routes = [
   { path: '/createNode', name: 'Create Node', component: CreateNode },
   { path: '/createTrace', name: 'Create Trace', component: CreateTrace },
   { path: '/visualize', name: 'Visualize', component: Visualize, exact: true },
-  { path: '/visualize/create', name: 'CreatePanel', component: CreatePanel },
+  { path: '/visualize/create', name: 'Configure Visualization', component: CreatePanel },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },

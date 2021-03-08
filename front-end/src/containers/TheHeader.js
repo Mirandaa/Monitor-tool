@@ -125,7 +125,7 @@ const TheHeader = () => {
           : null}
         {currentPath.search('/visualize/create') !== -1 ?
           <div className="d-md-down-none mfe-2 c-subheader-nav" style={{ fontWeight: 'bold' }}>
-            {`Current Node: ${QueryString.parse(currentSearch).sourceName}`}
+            {`Current Node: ${QueryString.parse(currentSearch).host}#${QueryString.parse(currentSearch).app}`}
           </div>
           : null}
       </CSubheader>

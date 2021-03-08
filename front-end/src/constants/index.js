@@ -1,6 +1,6 @@
 export const aggregationTypeList = [
   {
-    key: 'average',
+    key: 'avg',
     name: 'Average'
   },
   {
@@ -43,7 +43,7 @@ export const aggregationTypeList = [
 
 export const bucktesAggregationTypeList = [
   {
-    key: 'dataHistogram',
+    key: 'date_histogram',
     name: 'Data Histogram'
   },
   {
