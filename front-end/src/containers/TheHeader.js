@@ -55,12 +55,12 @@ const TheHeader = () => {
       let newNodeList = []
   
       if (allNodes) {
-        allNodes.map(async (node) => {
+        for (let i = 0; i < allNodes.length; i++) {
           newNodeList.push({
-            nodeId: node.nodeId,
-            nodeStatus: node.status
+            nodeId: allNodes[i].nodeId,
+            nodeStatus: allNodes[i].status
           })
-        })
+        }
         setNodeList(newNodeList)
       }
     }
@@ -95,7 +95,7 @@ const TheHeader = () => {
           className="border-0 c-subheader-nav m-0 px-0 px-md-3"
           routes={routes}
         />
-        {['/dashboard', '/visualize'].includes(currentPath) ? 
+        {['/dashboard'].includes(currentPath) ? 
           <div className="d-md-down-none mfe-2 c-subheader-nav">
             <CDropdown className="c-subheader-nav-link">
               <CDropdownToggle onClick={getNodeList}>
@@ -110,7 +110,7 @@ const TheHeader = () => {
                       aria-current="page" 
                       onClick={e => {
                         dispatch({type: 'SET_CURRENT_NODE', nodeId: node.nodeId})
-                        dispatch({type: 'SET_NODE_STATUS', nodeStatus: node.status})
+                        dispatch({type: 'SET_NODE_STATUS', nodeStatus: node.nodeStatus})
                       }}
                       to="/dashboard"
                     >
@@ -121,9 +121,6 @@ const TheHeader = () => {
                 })}
               </CDropdownMenu>
             </CDropdown>
-            {/* <CLink className="c-subheader-nav-link" href="#">
-              <CIcon name="cil-settings" alt="Settings" />&nbsp;Settings
-            </CLink> */}
           </div>
           : null}
         {currentPath.search('/visualize/create') !== -1 ?

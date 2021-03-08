@@ -46,8 +46,8 @@ const BasicIndex = () => {
     return (
         <>
         <CCardGroup className="mb-4">
-            <CCallout color={currentNode.nodeStatus === 1 ? 'success'
-                : currentNode.nodeStatus === 2 ? 'warning'
+            <CCallout color={currentNode.nodeStatus === 'green' ? 'success'
+                : currentNode.nodeStatus === 'yellow' ? 'warning'
                 : 'danger'}
             >
                 <div className="mt-2">
