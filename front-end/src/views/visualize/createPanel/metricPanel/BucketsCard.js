@@ -20,7 +20,7 @@ const BucketsCard = (props) => {
   const [buckets, setBuckets] = useState([
     {
       id: uuidv4(),
-      aggregation: 'filters',
+      aggregation: 'date_histogram',
       field: '',
       coustomLabel: '',
       collapse: true
@@ -68,6 +68,7 @@ const BucketsCard = (props) => {
       return item;
     });
     setBuckets(bucketsCopy);
+    props.onChange(buckets);
   };
 
   const aggregationSelectChange = (e, metric) => {

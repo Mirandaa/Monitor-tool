@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-// import * as QueryString from 'query-string';
+import * as QueryString from 'query-string';
 import MetricPanel from './metricPanel/MetricPanel';
 import {
   CButton,
@@ -15,15 +15,15 @@ import CIcon from '@coreui/icons-react'
 import RulesModal from './rulesModal/RulesModal';
 import { v4 as uuidv4 } from 'uuid';
 import './CreatePanel.less';
+import { createDashboard } from '@/api';
 
 
 const CreatePanel = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  // const host = QueryString.parse(props.location.search).host;
-  // const app = QueryString.parse(props.location.search).app;
+  const host = QueryString.parse(props.location.search).host;
+  const app = QueryString.parse(props.location.search).app;
   // const sourceName = QueryString.parse(props.location.search).sourceName;
   const [confirmCancelModal, setConfirmCancelModal] = useState(false);
-
   const [rules, setRules] = useState([]);
 
   const toggleConfirmCancelModal = ()=>{
@@ -48,7 +48,8 @@ const CreatePanel = (props) => {
       id: uuidv4(),
       collapse: true,
       data: {},
-      type: type
+      type: type,
+      group: 'owner'
     }])
   };
 
@@ -67,8 +68,24 @@ const CreatePanel = (props) => {
     props.history.push('/visualize');
   }
 
-  const saveVisualization = () => {
+  const saveVisualization = async () => {
+    console.log(rules)
+    const data = {
+      nodeId: `${host}#${app}`,
+      rule: rules
+    }
+    // await createDashboard(data);
+  };
 
+  const updateMetric = async (id, data) => {
+    const rulesCopy = rules.slice().map(item => {
+      if (item.id === id) {
+        item.data = data.aggs;
+        item.group = data.group;
+      }
+      return item;
+    })
+    setRules(rulesCopy);
   };
 
   // const updateMetric = (metric, field, value) => {
@@ -127,14 +144,14 @@ const CreatePanel = (props) => {
                 <div className="trigger-wrapper">
                   <button
                     color="primary"
-                    onClick={e => toggle(rule.id)}
+                    onClick={() => toggle(rule.id)}
                     className="collapse-btn"
                   >
                     <h3 className="collapse-title">{rule.type.name}</h3>
                   </button>
                   <button
                     color="primary"
-                    onClick={e => deleteRule(rule.id)}
+                    onClick={() => deleteRule(rule.id)}
                     className="collapse-btn close-btn"
                   >
                     <CIcon name="cil-X"></CIcon>
@@ -145,7 +162,10 @@ const CreatePanel = (props) => {
                 >
                   <div className="child-wrapper">
                     {
-                      rule.type.key === 'metric' ? <MetricPanel></MetricPanel> : null
+                      // TODO
+                      rule.type.key === 'metric' ?
+                      <MetricPanel onChange={data => updateMetric(rule.id, data)}></MetricPanel>
+                      : <MetricPanel onChange={data => updateMetric(rule.id, data)}></MetricPanel>
                     }
                     
                   </div>

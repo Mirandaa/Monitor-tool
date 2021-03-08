@@ -77,3 +77,11 @@ export async function getNodeInfo(nodeId) {
     userRatio: 0
   }
 }
+
+export async function createDashboard(data) {
+  return request({
+    url: '/createDashboard',
+    method: 'post',
+    data
+  })
+}
