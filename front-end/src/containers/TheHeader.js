@@ -108,7 +108,7 @@ const TheHeader = () => {
                       aria-current="page" 
                       onClick={e => {
                         dispatch({type: 'SET_CURRENT_NODE', nodeId: node.nodeId})
-                        dispatch({type: 'SET_NODE_STATUS', nodeStatus: node.status})
+                        dispatch({type: 'SET_NODE_STATUS', nodeStatus: node.nodeStatus})
                       }}
                       to="/dashboard"
                     >
