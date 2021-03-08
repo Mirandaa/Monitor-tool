@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'
 import {
+    CBadge,
     CButton,
     CCard,
     CCardBody,
@@ -10,7 +11,6 @@ import {
     CFormGroup,
     CFormText,
     CTextarea,
-    CToastHeader,
     CToastBody,
     CInput,
     CLabel,
@@ -29,8 +29,9 @@ const CreateNode = () => {
     const [group, setGroup] = useState("");
     const [groupMail, setGroupMail] = useState("");
     const [desciption, setDesciption] = useState("");
-
-    // const [toastShow, setToastShow] = useState(false);
+    const [submitSuccessShow, setSubmitSuccessShow] = useState(false);
+    const [submitFailShow, setSubmitFailShow] = useState(false);
+    const [resetToastShow, setResetToastShow] = useState(false);
 
     const createNodeReq = (e) => {
         let forms = document.querySelectorAll('.needs-validation')
@@ -48,11 +49,23 @@ const CreateNode = () => {
             appGroupMail: groupMail,
             appDesciption: desciption
         }
-        const res = createNode(payload)
+        const res = createNode(payload).then((res) => {
+            if (res.nodeId === hostName + '#' + appName) {
+                setSubmitSuccessShow(true)
+                setTimeout(() => {
+                    setSubmitSuccessShow(false)
+                }, 3000)
+            } else {
+                setSubmitFailShow(true)
+                setTimeout(() => {
+                    setSubmitFailShow(false)
+                }, 3000)
+            }
+        })
     }
 
     const resetForm = (e) => {
-        // setToastShow(true)
+        setResetToastShow(true)
         let forms = document.querySelectorAll('.needs-validation')
         forms[0].classList.remove('was-validated')
         setAppName("");
@@ -61,6 +74,9 @@ const CreateNode = () => {
         setGroup("");
         setGroupMail("");
         setDesciption("");
+        setTimeout(() => {
+            setResetToastShow(false)
+        }, 3000)
     }
 
     return (
@@ -175,22 +191,38 @@ const CreateNode = () => {
                     </CForm>
                 </CCardBody>
             </CCard>
-            {/* <CToaster 
+            <CToaster 
                 position="top-right"
+                className="mt-5"
             >
                 <CToast
-                    show={toastShow}
+                    show={submitSuccessShow}
                     autohide={1000}
-                    fade={true}
                     >
-                    <CToastHeader >
-                        Toast title
-                    </CToastHeader>
                     <CToastBody>
-                        {`This is a toast in  xxx positioned toaster number xx.`}
+                        <CBadge className="mr-1" color="success">Success</CBadge>
+                        &nbsp;Create a new node successfully!
                     </CToastBody>
                 </CToast>
-            </CToaster> */}
+                <CToast
+                    show={submitFailShow}
+                    autohide={1000}
+                    >
+                    <CToastBody>
+                        <CBadge className="mr-1" color="danger">Error</CBadge>
+                        &nbsp;Create a new node failed with error.
+                    </CToastBody>
+                </CToast>
+                <CToast
+                    show={resetToastShow}
+                    autohide={1000}
+                    >
+                    <CToastBody>
+                        <CBadge className="mr-1" color="success">Success</CBadge>
+                        &nbsp;Reset create node form
+                    </CToastBody>
+                </CToast>
+            </CToaster>
         </>
     )
 }

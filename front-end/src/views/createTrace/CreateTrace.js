@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useStore } from 'react-redux'
 import {
+    CBadge,
     CButton,
     CCard,
     CCardBody,
@@ -12,8 +13,9 @@ import {
     CInvalidFeedback,
     CLabel,
     CToast,
-    CToastHeader,
-    CToastBody
+    CToaster,
+    CToastBody,
+    CRow
   } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { createTrace } from 'src/api/index'
@@ -29,6 +31,23 @@ const CreateTrace = () => {
             toNodeId: ''
         }
     ]);
+    const [submitSuccessShow, setSubmitSuccessShow] = useState(false);
+    const [submitFailShow, setSubmitFailShow] = useState(false);
+    const [resetToastShow, setResetToastShow] = useState(false);
+
+    function addNewSpan() {
+        let newSpans = spans.slice()
+        newSpans.push({
+            fromNodeId: '',
+            toNodeId: ''
+        })
+        setSpans(newSpans)
+    }
+
+    function removeSpan() {
+        let newSpans = spans.slice(0, -1)
+        setSpans(newSpans)
+    }
 
     function fromNodeChangeHandle(event, index) {
         let newSpans = spans.slice()
@@ -56,13 +75,23 @@ const CreateTrace = () => {
             spans: spans
         }
         // call api /createTrace
-        const res = createTrace(payload)
-        if (res === true) {
-            // do something
-        }
+        const res = createTrace(payload).then((res) => {
+            if (res) {
+                setSubmitSuccessShow(true)
+                setTimeout(() => {
+                    setSubmitSuccessShow(false)
+                }, 3000)
+            } else {
+                setSubmitFailShow(true)
+                setTimeout(() => {
+                    setSubmitFailShow(false)
+                }, 3000)
+            }
+        })
     }
 
     const resetForm = async (e) => {
+        setResetToastShow(true)
         let forms = document.querySelectorAll('.needs-validation')
         forms[0].classList.remove('was-validated')
         setTraceName("");
@@ -73,6 +102,9 @@ const CreateTrace = () => {
                 toNodeId: ''
             }
         ])
+        setTimeout(() => {
+            setResetToastShow(false)
+        }, 3000)
     }
 
     return (
@@ -117,36 +149,39 @@ const CreateTrace = () => {
                         <CInvalidFeedback>Please input a valid node ID.</CInvalidFeedback>
                         </CCol>
                     </CFormGroup>
-                    {/* <CFormGroup row>
+                    <CRow>
                         <CCol md="6">
-                            <CLabel htmlFor="password-input">From Node ID</CLabel>
-                            <CInput 
-                                type="input"
-                                placeholder="Enter the upstream node ID"
-                                required
-                                value={fromNodeId}
-                                onChange={(e) => setFromNodeId(e.target.value)}
-                            />
-                            <CInvalidFeedback>Please input a valid node ID.</CInvalidFeedback>
+                            <CLabel >From Node ID</CLabel>
                         </CCol>
                         <CCol md="6">
-                            <CLabel htmlFor="password-input">To Node ID</CLabel>
-                            <CInput 
-                                type="input"
-                                placeholder="Enter the downstream node ID"
-                                required
-                                value={toNodeId}
-                                onChange={(e) => setToNodeId(e.target.value)}
-                            />
-                            <CInvalidFeedback>Please input a valid node ID.</CInvalidFeedback>
+                            <CLabel >To Node ID</CLabel>
                         </CCol>
-                    </CFormGroup> */}
+                    </CRow>
                     {spans.map((data, index) => {
                         return <AddSpan span={data} key={index}
                             onFromNodeChange={e => fromNodeChangeHandle(e, index)}
                             onToNodeChange={e => toNodeChangeHandle(e, index)}
                         />
                     })}
+                    <CButton 
+                        size="sm"
+                        color="dark"
+                        variant="outline"
+                        onClick={addNewSpan}
+                    >
+                        + Add a new trace
+                    </CButton>
+                    {spans.length > 1 ? 
+                        <CButton
+                            size="sm"
+                            color="danger"
+                            variant="outline"
+                            className="ml-2"
+                            onClick={removeSpan}
+                        >
+                            - Remove last trace
+                        </CButton>
+                    : null}
                     <div className="c-datatable-filter">
                         <div className="mfs-auto">
                             <CButton type="submit" size="sm" color="success" className="mr-2"><CIcon name="cil-scrubber" /> Submit</CButton>
@@ -156,6 +191,38 @@ const CreateTrace = () => {
                     </CForm>
                 </CCardBody>
             </CCard>
+            <CToaster 
+                position="top-right"
+                className="mt-5"
+            >
+                <CToast
+                    show={submitSuccessShow}
+                    autohide={1000}
+                    >
+                    <CToastBody>
+                        <CBadge className="mr-1" color="success">Success</CBadge>
+                        &nbsp;Create a new trace successfully!
+                    </CToastBody>
+                </CToast>
+                <CToast
+                    show={submitFailShow}
+                    autohide={1000}
+                    >
+                    <CToastBody>
+                        <CBadge className="mr-1" color="danger">Error</CBadge>
+                        &nbsp;Create a new trace failed with error.
+                    </CToastBody>
+                </CToast>
+                <CToast
+                    show={resetToastShow}
+                    autohide={1000}
+                    >
+                    <CToastBody>
+                        <CBadge className="mr-1" color="success">Success</CBadge>
+                        &nbsp;Reset create trace form
+                    </CToastBody>
+                </CToast>
+            </CToaster>
         </>
     )
 }
