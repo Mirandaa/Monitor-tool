@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import * as QueryString from 'query-string';
-import MetricPanel from './metricPanel/MetricPanel';
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import * as QueryString from "query-string";
+import MetricPanel from "./metricPanel/MetricPanel";
 import {
   CButton,
   CCard,
@@ -13,14 +13,18 @@ import {
   CModal,
   CModalBody,
   CModalHeader,
-  CModalFooter
-} from '@coreui/react';
-import CIcon from '@coreui/icons-react'
-import RulesModal from './rulesModal/RulesModal';
-import { v4 as uuidv4 } from 'uuid';
-import './CreatePanel.less';
-import { createDashboard } from '@/api';
-
+  CModalFooter,
+  CToaster,
+  CToastBody,
+  CToast,
+  CBadge
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import RulesModal from "./rulesModal/RulesModal";
+import { v4 as uuidv4 } from "uuid";
+import "./CreatePanel.less";
+import { createDashboard } from "@/api";
+import { useHistory } from 'react-router-dom';
 
 const CreatePanel = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,38 +33,43 @@ const CreatePanel = (props) => {
   // const sourceName = QueryString.parse(props.location.search).sourceName;
   const [confirmCancelModal, setConfirmCancelModal] = useState(false);
   const [rules, setRules] = useState([]);
+  const [submitAlertShow, setSubmitAlertShow] = useState(false);
+  const history = useHistory();
 
-  const toggleConfirmCancelModal = ()=>{
+  const toggleConfirmCancelModal = () => {
     setConfirmCancelModal(!confirmCancelModal);
-  }
+  };
 
   const toggle = (id) => {
-    const rulesCopy = rules.slice().map(item => {
+    const rulesCopy = rules.slice().map((item) => {
       if (item.id === id) {
         item.collapse = !item.collapse;
       }
       return item;
-    })
+    });
     setRules(rulesCopy);
-  }
+  };
 
   const addRule = (type) => {
     const rules1 = rules.slice().map((item) => {
-      return { ...item, collapse: false }
+      return { ...item, collapse: false };
     });
-    setRules([...rules1, {
-      id: uuidv4(),
-      collapse: true,
-      data: {},
-      type: type,
-      group: 'owner'
-    }])
+    setRules([
+      ...rules1,
+      {
+        id: uuidv4(),
+        collapse: true,
+        data: {},
+        type: type,
+        group: "owner",
+      },
+    ]);
   };
 
   const deleteRule = (id) => {
-    const index = rules.findIndex(item => item.id === id);
+    const index = rules.findIndex((item) => item.id === id);
     const rulesCopy = rules.slice();
-    rulesCopy.splice(index, 1)
+    rulesCopy.splice(index, 1);
     setRules(rulesCopy);
   };
 
@@ -69,26 +78,46 @@ const CreatePanel = (props) => {
   };
 
   const cancelCreateVisualization = () => {
-    props.history.push('/visualize');
-  }
+    props.history.push("/visualize");
+  };
 
   const saveVisualization = async () => {
-    console.log(rules)
+    console.log(rules);
+    const resRule = rules.map((item) => {
+      return {
+        group: item.data.group,
+        params: {
+          field: item.data[0].field,
+          interval: item.data[1].interval,
+        },
+        template: null,
+        type: item.data[0].aggregation,
+        userName: "",
+      };
+    });
     const data = {
       nodeId: `${host}#${app}`,
-      rule: rules
+      rule: resRule,
+    };
+    const res = await createDashboard(data);
+    console.log(res)
+    if(res === true) {
+      setSubmitAlertShow(true);
+      setTimeout(() => {
+        setSubmitAlertShow(false);
+        history.push('/dashboard');
+      },3000);
     }
-    // await createDashboard(data);
   };
 
   const updateMetric = async (id, data) => {
-    const rulesCopy = rules.slice().map(item => {
+    const rulesCopy = rules.slice().map((item) => {
       if (item.id === id) {
         item.data = data.aggs;
         item.group = data.group;
       }
       return item;
-    })
+    });
     setRules(rulesCopy);
   };
 
@@ -105,91 +134,111 @@ const CreatePanel = (props) => {
 
   return (
     <div className="create-panel-container">
-      <CModal
-        show={confirmCancelModal}
-        onClose={toggleConfirmCancelModal}
-      >
+      <CModal show={confirmCancelModal} onClose={toggleConfirmCancelModal}>
         <CModalHeader closeButton>Confirm dialog</CModalHeader>
         <CModalBody>
           Are you sure you want to cancel the configurations?
         </CModalBody>
         <CModalFooter>
-          <CButton color="primary" onClick={cancelCreateVisualization}>Confirm</CButton>{' '}
-          <CButton
-            color="secondary"
-            onClick={toggleConfirmCancelModal}
-          >Cancel</CButton>
+          <CButton color="primary" onClick={cancelCreateVisualization}>
+            Confirm
+          </CButton>{" "}
+          <CButton color="secondary" onClick={toggleConfirmCancelModal}>
+            Cancel
+          </CButton>
         </CModalFooter>
       </CModal>
       <RulesModal
         show={modalVisible}
         onClose={setModalVisible}
         onSelect={handleSelectRuleType}
-      >
-      </RulesModal>
+      ></RulesModal>
       <div className="btn-wrapper">
-        <CButton color="primary" variant="outline" onClick={() => toggleConfirmCancelModal()}>Cancel</CButton>
-        <CButton color="primary" onClick={() => saveVisualization()}>Save all</CButton>
+        <CButton
+          color="primary"
+          variant="outline"
+          onClick={() => toggleConfirmCancelModal()}
+        >
+          Cancel
+        </CButton>
+        <CButton color="primary" onClick={() => saveVisualization()}>
+          Save all
+        </CButton>
       </div>
-      <CCard >
-        <CCardHeader>
-          Create rule guide
-        </CCardHeader>
+      <CCard>
+        <CCardHeader>Create rule guide</CCardHeader>
         <CCardBody>
           <CListGroup accent>
             <CListGroupItem accent="primary">
-              1. Please click 'Add rule' button and choose a rule. Here are twelve rules for you to choose. All the rules you create will be associated with this dashboard. 
+              1. Please click 'Add rule' button and choose a rule. Here are
+              twelve rules for you to choose. All the rules you create will be
+              associated with this dashboard.
             </CListGroupItem>
             <CListGroupItem accent="primary">
-              2. Please click 'Save all' button after finishing configuring rule. Then, the page will redirect to dashboard.
+              2. Please click 'Save all' button after finishing configuring
+              rule. Then, the page will redirect to dashboard.
             </CListGroupItem>
           </CListGroup>
         </CCardBody>
       </CCard>
-      {
-        rules.map((rule) => {
-          return (
-            <div className="collapse-wrapper" key={rule.id}>
-                <div className="trigger-wrapper">
-                  <button
-                    color="primary"
-                    onClick={() => toggle(rule.id)}
-                    className="collapse-btn"
-                  >
-                    <h3 className="collapse-title">{rule.type.name}</h3>
-                  </button>
-                  <button
-                    color="primary"
-                    onClick={() => deleteRule(rule.id)}
-                    className="collapse-btn close-btn"
-                  >
-                    <CIcon name="cil-X"></CIcon>
-                  </button>
-                </div>
-                <CCollapse
-                  show={rule.collapse}
-                >
-                  <div className="child-wrapper">
-                    {
-                      // TODO
-                      rule.type.key === 'metric' ?
-                      <MetricPanel onChange={data => updateMetric(rule.id, data)}></MetricPanel>
-                      : <MetricPanel onChange={data => updateMetric(rule.id, data)}></MetricPanel>
-                    }
-                    
-                  </div>
-                </CCollapse>
+      {rules.map((rule) => {
+        return (
+          <div className="collapse-wrapper" key={rule.id}>
+            <div className="trigger-wrapper">
+              <button
+                color="primary"
+                onClick={() => toggle(rule.id)}
+                className="collapse-btn"
+              >
+                <h3 className="collapse-title">{rule.type.name}</h3>
+              </button>
+              <button
+                color="primary"
+                onClick={() => deleteRule(rule.id)}
+                className="collapse-btn close-btn"
+              >
+                <CIcon name="cil-X"></CIcon>
+              </button>
+            </div>
+            <CCollapse show={rule.collapse}>
+              <div className="child-wrapper">
+                {
+                  // TODO
+                  rule.type.key === "metric" ? (
+                    <MetricPanel
+                      onChange={(data) => updateMetric(rule.id, data)}
+                    ></MetricPanel>
+                  ) : (
+                    <MetricPanel
+                      onChange={(data) => updateMetric(rule.id, data)}
+                    ></MetricPanel>
+                  )
+                }
               </div>
-            
-          )
-        })
-      }
-      <CButton color="primary" block variant="outline" className="mt-2 mb-2"
+            </CCollapse>
+          </div>
+        );
+      })}
+      <CButton
+        color="primary"
+        block
+        variant="outline"
+        className="mt-2 mb-2"
         onClick={() => setModalVisible(true)}
       >
         Add rule
       </CButton>
+      <CToaster position="top-right" className="mt-5">
+        <CToast show={submitAlertShow} autohide={1000}>
+          <CToastBody>
+            <CBadge className="mr-1" color="success">
+              Success
+            </CBadge>
+            &nbsp;Config visualization successfully!
+          </CToastBody>
+        </CToast>
+      </CToaster>
     </div>
-  )
-}
+  );
+};
 export default withRouter(CreatePanel);

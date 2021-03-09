@@ -13,7 +13,7 @@ import {
   CCallout
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
+import MetricChart from './MetricChart';
 import MainChartExample from '../charts/MainChartExample.js'
 import BasicIndex from './basicIndex/BasicIndex.js';
 
@@ -48,7 +48,7 @@ const Dashboard = () => {
               </CButtonGroup>
             </CCol>
           </CRow>
-          <MainChartExample style={{height: '300px', marginTop: '40px'}}/>
+        <MainChartExample style={{height: '300px', marginTop: '40px'}}/>
         </CCardBody>
         <CCardFooter>
           <CRow className="text-center">
@@ -104,7 +104,7 @@ const Dashboard = () => {
           </CRow>
         </CCardFooter>
       </CCard>
-
+      <MetricChart style={{height: '200px', marginTop: '40px'}}></MetricChart>
       {/* <CRow>
         <CCol>
           <CCard>

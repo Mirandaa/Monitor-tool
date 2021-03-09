@@ -102,3 +102,34 @@ export const quickTimeRangeList = [
     name: 'This year'
   }
 ]
+
+export const intervalList = [
+  {
+    key: '1m',
+    name: 'minute'
+  },
+  {
+    key: '1h',
+    name: 'hour'
+  },
+  {
+    key: '1d',
+    name: 'day'
+  },
+  {
+    key: '1w',
+    name: 'week'
+  },
+  {
+    key: '1mon',
+    name: 'month'
+  },
+  {
+    key: '1q',
+    name: 'quarter'
+  },
+  {
+    key: 'year',
+    name: 'year'
+  }
+]

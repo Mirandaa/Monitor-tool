@@ -12,16 +12,16 @@ import {
   CSelect
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react'
-import './MetricPanel.less';
+// import './BucketPanel.less';
 import { v4 as uuidv4 } from 'uuid';
-import { bucktesAggregationTypeList } from '@/constants';
+import { bucktesAggregationTypeList, intervalList } from '@/constants';
 
 const BucketsCard = (props) => {
   const [buckets, setBuckets] = useState([
     {
       id: uuidv4(),
       aggregation: 'date_histogram',
-      field: '',
+      interval: 'minute',
       coustomLabel: '',
       collapse: true
     }
@@ -38,7 +38,7 @@ const BucketsCard = (props) => {
     setBuckets(bucketsCopy);
   }
 
-  const addMetric = () => {
+  const addBucket = () => {
     const buckets1 = buckets.slice().map((item) => {
       return { ...item, collapse: false }
     });
@@ -51,7 +51,7 @@ const BucketsCard = (props) => {
     }])
   };
 
-  const deleteMetric = (id) => {
+  const deleteBucket = (id) => {
     const index = buckets.findIndex(item => item.id === id);
     const bucketsCopy = buckets.slice();
     bucketsCopy.splice(index, 1)
@@ -59,10 +59,10 @@ const BucketsCard = (props) => {
     setBuckets(bucketsCopy);
   };
 
-  const updateMetric = (metric, field, value) => {
+  const updateBucket = (bucket, field, value) => {
     const bucketsCopy = buckets.slice();
     bucketsCopy.map(item => {
-      if (item.id === metric.id) {
+      if (item.id === bucket.id) {
         item[field] = value;
       }
       return item;
@@ -71,16 +71,16 @@ const BucketsCard = (props) => {
     props.onChange(buckets);
   };
 
-  const aggregationSelectChange = (e, metric) => {
-    updateMetric(metric, 'aggregation', e.target.value);
+  const aggregationSelectChange = (e, bucket) => {
+    updateBucket(bucket, 'aggregation', e.target.value);
   };
 
-  const customLabelChange = (e, metric) => {
-    updateMetric(metric, 'coustomLabel', e.target.value);
+  const intervalChange = (e, bucket) => {
+    updateBucket(bucket, 'interval', e.target.value);
   };
 
-  const fieldChange = (e, metric) => {
-    updateMetric(metric, 'field', e.target.value);
+  const fieldChange = (e, bucket) => {
+    updateBucket(bucket, 'field', e.target.value);
   };
 
   return (
@@ -90,33 +90,33 @@ const BucketsCard = (props) => {
       </CCardHeader>
       <CCardBody>
         {
-          buckets.map((metric) => {
+          buckets.map((bucket) => {
             return (
-              <div className="collapse-wrapper" key={metric.id}>
+              <div className="collapse-wrapper" key={bucket.id}>
                 <div className="trigger-wrapper">
                   <button
                     color="primary"
-                    onClick={e => toggle(metric.id)}
+                    onClick={e => toggle(bucket.id)}
                     className="collapse-btn"
                   >
-                    {metric.aggregation ? `Split group / ${metric.aggregation}` : 'Split group'}
+                    {bucket.aggregation ? `Split group / ${bucket.aggregation}` : 'Split group'}
                   </button>
                   <button
                     color="primary"
-                    onClick={e => deleteMetric(metric.id)}
+                    onClick={e => deleteBucket(bucket.id)}
                     className="collapse-btn close-btn"
                   >
                     <CIcon name="cil-X"></CIcon>
                   </button>
                 </div>
                 <CCollapse
-                  show={metric.collapse}
+                  show={bucket.collapse}
                 >
                   <div className="child-wrapper">
                     <CForm>
                       <CFormGroup>
                         <CLabel htmlFor="aggregationSelect" className="label">Aggregation</CLabel>
-                        <CSelect custom name="aggregationSelect" id="aggregationSelect" value={metric.aggregation} onChange={(e) => aggregationSelectChange(e, metric)}>
+                        <CSelect custom name="aggregationSelect" id="aggregationSelect" value={bucket.aggregation} onChange={(e) => aggregationSelectChange(e, bucket)}>
                           {
                             bucktesAggregationTypeList.map((item) => {
                               return <option key={item.key} value={item.key}>{item.name}</option>
@@ -125,35 +125,27 @@ const BucketsCard = (props) => {
 
                         </CSelect>
                       </CFormGroup>
-                      {
-                        metric.aggregation === 'count' ? (
-                          null
-                        ) : (
-                          <CFormGroup>
-                            <CLabel htmlFor="field" className="label">Field</CLabel>
-                            <CInput
-                              type="text"
-                              id="field"
-                              name="field"
-                              placeholder=""
-                              value={metric.field}
-                              onChange={(e) => fieldChange(e, metric)}
-                            />
-                          </CFormGroup>
-                        )
-                      }
-                      <CFormGroup>
-                        <CLabel htmlFor="customLabel" className="label">Custom label</CLabel>
-                        <CInput
-                          type="text"
-                          id="customLabel"
-                          name="customLabel"
-                          placeholder=""
-                          value={metric.coustomLabel}
-                          onChange={(e) => customLabelChange(e, metric)}
-                        />
-                      </CFormGroup>
+                      {/* <CFormGroup>
+                        <CLabel htmlFor="aggregationSelect" className="label">Aggregation</CLabel>
+                        <CSelect custom name="aggregationSelect" id="aggregationSelect" value={bucket.aggregation} onChange={(e) => aggregationSelectChange(e, bucket)}>
+                          {
+                            aggregationTypeList.map((item) => {
+                              return <option key={item.key} value={item.key}>{item.name}</option>
+                            })
+                          }
 
+                        </CSelect>
+                      </CFormGroup> */}
+                      <CFormGroup>
+                        <CLabel htmlFor="intervalSelect" className="label">Minimum interval</CLabel>
+                        <CSelect custom name="intervalSelect" id="intervalSelect" value={bucket.interval} onChange={(e) => intervalChange(e, bucket)}>
+                          {
+                            intervalList.map((item) => {
+                              return <option key={item.key} value={item.key}>{item.name}</option>
+                            })
+                          }
+                        </CSelect>
+                      </CFormGroup>
                     </CForm>
                   </div>
                 </CCollapse>
@@ -162,7 +154,7 @@ const BucketsCard = (props) => {
           })
         }
         <div className="btn-wrapper">
-          <CButton size="sm" color="success" variant="outline" onClick={addMetric}>Add</CButton>
+          <CButton size="sm" color="success" variant="outline" onClick={addBucket}>Add</CButton>
         </div>
       </CCardBody>
     </CCard>

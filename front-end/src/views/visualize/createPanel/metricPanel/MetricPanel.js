@@ -16,7 +16,6 @@ const MetricPanel = (props) => {
   const [group, setGroup] = useState('owner');
 
   const handleGroupChange = (e) => {
-    console.log(e.target.value);
     setGroup(e.target.value);
   }
 
