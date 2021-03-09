@@ -4,8 +4,12 @@ import * as QueryString from 'query-string';
 import MetricPanel from './metricPanel/MetricPanel';
 import {
   CButton,
+  CCard,
+  CCardHeader,
+  CCardBody,
   CCollapse,
-  CAlert,
+  CListGroup,
+  CListGroupItem,
   CModal,
   CModalBody,
   CModalHeader,
@@ -127,16 +131,21 @@ const CreatePanel = (props) => {
         <CButton color="primary" variant="outline" onClick={() => toggleConfirmCancelModal()}>Cancel</CButton>
         <CButton color="primary" onClick={() => saveVisualization()}>Save all</CButton>
       </div>
-      <CAlert color="secondary">
-        <h4 className="alert-heading">Create rule guide</h4>
-        <hr />
-        <p>
-          1. Please click 'Add rule' button and choose a rule. Here are twelve rules for you to choose. All the rules you create will be associated with this dashboard. 
-        </p>
-        <p className="mb-0">
-          2. Please click 'Save all' button after finishing configuring rule. Then, the page will redirect to dashboard.
-        </p>
-      </CAlert>
+      <CCard >
+        <CCardHeader>
+          Create rule guide
+        </CCardHeader>
+        <CCardBody>
+          <CListGroup accent>
+            <CListGroupItem accent="primary">
+              1. Please click 'Add rule' button and choose a rule. Here are twelve rules for you to choose. All the rules you create will be associated with this dashboard. 
+            </CListGroupItem>
+            <CListGroupItem accent="primary">
+              2. Please click 'Save all' button after finishing configuring rule. Then, the page will redirect to dashboard.
+            </CListGroupItem>
+          </CListGroup>
+        </CCardBody>
+      </CCard>
       {
         rules.map((rule) => {
           return (
@@ -175,9 +184,11 @@ const CreatePanel = (props) => {
           )
         })
       }
-      <div>
-        <CButton color="primary" block variant="outline" onClick={() => setModalVisible(true)}>Add rule</CButton>
-      </div>
+      <CButton color="primary" block variant="outline" className="mt-2 mb-2"
+        onClick={() => setModalVisible(true)}
+      >
+        Add rule
+      </CButton>
     </div>
   )
 }

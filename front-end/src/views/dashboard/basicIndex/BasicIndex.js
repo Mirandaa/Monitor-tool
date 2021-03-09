@@ -14,7 +14,6 @@ import { getNodeInfo } from 'src/api/index'
 import { conver } from 'src/utils/utils'
 
 const BasicIndex = () => {
-    const dispatch = useDispatch()
     const currentNode = useSelector(state => state.node)
     
     const [commonMetrics, setCommonMetrics] = useState({
