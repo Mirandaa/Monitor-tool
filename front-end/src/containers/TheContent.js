@@ -35,7 +35,7 @@ const TheContent = () => {
                   )} />
               )
             })}
-            <Redirect from="/" to="/Applications" />
+            <Redirect from="/" to="/overview" />
           </Switch>
         </Suspense>
       </CContainer>

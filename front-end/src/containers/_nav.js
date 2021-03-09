@@ -4,8 +4,8 @@ import CIcon from '@coreui/icons-react'
 const _nav = [
   {
     _tag: 'CSidebarNavItem',
-    name: 'Applications',
-    to: '/applications',
+    name: 'Overview',
+    to: '/overview',
     icon: 'cil-apps'
   },
   {

@@ -26,7 +26,7 @@ const ButtonGroups = React.lazy(() => import('./views/buttons/button-groups/Butt
 const Buttons = React.lazy(() => import('./views/buttons/buttons/Buttons'));
 const Charts = React.lazy(() => import('./views/charts/Charts'));
 
-const Applications = React.lazy(() => import('./views/applications/Applications'));
+const Overview = React.lazy(() => import('./views/overview/Overview'));
 const CreateNode = React.lazy(() => import('./views/createNode/CreateNode'));
 const CreateTrace = React.lazy(() => import('./views/createTrace/CreateTrace'));
 const Visualize = React.lazy(() => import('./views/visualize/Visualize'));
@@ -46,7 +46,7 @@ const User = React.lazy(() => import('./views/users/User'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/applications', name: 'Applications', component: Applications },
+  { path: '/overview', name: 'Overview', component: Overview },
   { path: '/createNode', name: 'Create Node', component: CreateNode },
   { path: '/createTrace', name: 'Create Trace', component: CreateTrace },
   { path: '/visualize', name: 'Visualize', component: Visualize, exact: true },

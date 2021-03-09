@@ -12,13 +12,13 @@ const Page = (props) => {
       name: "Blue"
     },
     {
-      name: "Green"
+      name: "Online"
     },
     {
-      name: "Yellow"
+      name: "Busy"
     },
     {
-      name: "Red"
+      name: "Offline"
     }
   ]);
 
@@ -57,9 +57,9 @@ const Page = (props) => {
           trigger: 'item',
           formatter: function (params) {
             if (params.data.id) {
-              var nodeStatus = params.data.category === 1 ? '<span class="badge badge-success">Green</span>'
-                : params.data.category === 2 ? '<span class="badge badge-warning">Yellow</span>'
-                : '<span class="badge badge-danger">Red</span>'
+              var nodeStatus = params.data.category === 1 ? '<span class="badge badge-success">Online</span>'
+                : params.data.category === 2 ? '<span class="badge badge-warning">Busy</span>'
+                : '<span class="badge badge-danger">Offline</span>'
               var res = `
               <p style="font-weight: bold; line-height: 20px;">${params.data.id}</p>
               <p style="height: 16px;"><label style="width: 50px; text-overflow: ellipsis">Owner</label><span style="font-weight: bold;">${params.data.owner}</span></p>
