@@ -91,7 +91,7 @@ const MetricsCard = (props) => {
     <CCard>
       <CCardHeader>
         Metrics
-            </CCardHeader>
+      </CCardHeader>
       <CCardBody>
         {
           metrics.map((metric) => {
@@ -167,7 +167,7 @@ const MetricsCard = (props) => {
         }
 
         <div className="btn-wrapper">
-          <CButton size="sm" color="primary" variant="outline" onClick={addMetric}>add</CButton>
+          <CButton size="sm" color="success" variant="outline" onClick={addMetric}>Add</CButton>
         </div>
       </CCardBody>
     </CCard>
